@@ -12,9 +12,7 @@ __DESCRIPTION__
 
 Provides a UNIX(X) Process Pool that can be used to schedule work. The size of 
 the pool is up to you, and the pool can be dynamically resized at runtime if 
-needs be. If all subprocesses in the pool become busy there is a queue that will 
-be picked up as soon as a subprocess becomes available. Almost all other 
-features are touched on in the examples below.
+needs be. Almost all other features are covered in the examples below.
 
 __EXAMPLES__
 
