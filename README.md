@@ -10,11 +10,11 @@ __OVERVIEW__
 
 __DESCRIPTION__
 
-Provides a UNIX Process Pool that can be used to schedule work. The pool can be 
-dynamically resized at runtime as needs be, and if all subprocesses become busy
-there is a queue that will be picked up as soon as a subprocess becomes
-available. 
-
+Provides a UNIX(X) Process Pool that can be used to schedule work. The size of 
+the pool is up to you, and the pool can be dynamically resized at runtime if 
+needs be. If all subprocesses in the pool become busy there is a queue that will 
+be picked up as soon as a subprocess becomes available. Almost all other 
+features are touched on in the examples below.
 
 __EXAMPLES__
 
@@ -48,6 +48,20 @@ A demo of how you'd resize the pool at runtime:
     pool = XPool.new 10
     pool.resize 1..5
     pool.shutdown
+
+_3._
+
+A demo of how you'd gracefully shutdown but force a hard shutdown if 3 seconds
+pass by & all subprocesses have not exited:
+
+    class Unit
+      def call
+        sleep 5
+      end
+    end
+    pool = XPool.new 10
+    pool.schedule Unit.new
+    pool.shutdown 3
 
 __INSTALL__
 
