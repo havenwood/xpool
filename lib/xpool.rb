@@ -8,7 +8,7 @@ class XPool
   # @param [Fixnum] size
   #   The number of subprocesses to spawn.
   #
-  # @return [IProcess::Pool]
+  # @return [XPool]
   #
   def initialize(size=10)
     @queue = Queue.new
@@ -30,7 +30,7 @@ class XPool
   #   An optional amount of seconds to wait before forcing a shutdown through
   #   {#shutdown!}.
   #
-  # @see IProcess::Pool::Process#spawn
+  # @see XPool::Process#spawn
   # 
   # @return [void]
   #
@@ -65,7 +65,7 @@ class XPool
   # a new pool the size of _range_ is created. 
   #
   # @example
-  #   pool = IProcess.new 10
+  #   pool = XPool.new 10
   #   pool.resize 1..5 
   #   pool.shutdown
   #
@@ -92,7 +92,7 @@ class XPool
   # @return
   #   (see #resize)
   #
-  # @see IProcess#resize
+  # @see XPool#resize
   #
   def resize!(range)
     shutdown!
