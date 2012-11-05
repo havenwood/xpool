@@ -1,12 +1,12 @@
 require_relative 'setup'
 class XPoolTest < Test::Unit::TestCase
+  class Unit
+    def call
+      sleep 1
+    end
+  end
+
   def setup
-    klass = self.class # XPoolTest
-    klass.const_set :Unit, Class.new {
-      def call
-        sleep 1
-      end
-    }
     @pool = XPool.new 10
     @members = @pool.instance_variable_get(:@pool)
   end
