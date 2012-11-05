@@ -18,7 +18,7 @@ __EXAMPLES__
 
 _1._
 
-A demo of how you'd create a pool of subprocesses:
+A demo of how you'd create a pool of 10 subprocesses:
 
     #
     # Make sure you define your units of work before
@@ -36,7 +36,7 @@ A demo of how you'd create a pool of subprocesses:
 
 _2._
 
-A demo of how you'd resize the pool at runtime:
+A demo of how you'd resize the pool from 10 to 5 subprocesses at runtime:
 
     class Unit
       def call
