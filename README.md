@@ -2,8 +2,8 @@ __OVERVIEW__
 
 | Project         | XPool
 |:----------------|:--------------------------------------------------
-| Homepage        | https://github.com/robgleeson/XPool
-| Documentation   | http://rubydoc.info/gems/iprocess/frames 
+| Homepage        | https://github.com/robgleeson/xpool
+| Documentation   | http://rubydoc.info/gems/xpool/frames 
 | CI              | [![Build Status](https://travis-ci.org/robgleeson/XPool.png)](https://travis-ci.org/robgleeson/XPool)
 | Author          | Rob Gleeson             
 
