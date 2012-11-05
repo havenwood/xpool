@@ -14,5 +14,5 @@ Gem::Specification.new do |gem|
   gem.name          = "xpool"
   gem.require_paths = ["lib"]
   gem.version       = XPool::VERSION
-  gem.add_runtime_dependency "iprocess", "~> 3.1"
+  gem.add_runtime_dependency "iprocess", "~> 3.2"
 end
