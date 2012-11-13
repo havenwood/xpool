@@ -12,9 +12,10 @@ __DESCRIPTION__
 
 Provides a UNIX(X) Process Pool that can be used to schedule work. The size of 
 the pool is up to you, and the pool can be dynamically resized at runtime if 
-needs be. The pool also has everything you'd probably expect: a way to queue 
-work, a way to shutdown gracefully or not so gracefully, plus time outs on any
-graceful shutdown.
+needs be. The pool also has everything you'd probably expect: an in-memory queue 
+for when the pool becomes dried up (all subprocesses are busy), a way to
+schedule work, a way to shutdown gracefully or not so gracefully, plus time 
+outs on any graceful shutdown.
 
 __EXAMPLES__
 
