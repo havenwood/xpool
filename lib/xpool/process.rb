@@ -3,8 +3,8 @@ class XPool::Process
     @id = nil
     @busy = false
     @spawned = false
-    @job_channel = IProcess::Channel.new
-    @busy_channel = IProcess::Channel.new JSON
+    @job_channel = IChannel.new Marshal
+    @busy_channel = IChannel.new JSON
   end
 
   #
@@ -13,10 +13,19 @@ class XPool::Process
   # @return [void]
   #
   def spawn
-    @spawned = true
+    @active = true
     @id = fork
     listen
   end
+
+  #
+  # @return [Boolean]
+  #   Returns true when the process is alive.
+  #   
+  def active
+    @active
+  end
+  alias_method :active?, :active
 
   #
   # A graceful shutdown of the process.
@@ -69,7 +78,8 @@ private
       Process.kill sig, @id
       Process.wait @id
     rescue SystemCallError
-    ensure 
+    ensure
+      @active = false
       [@job_channel.close, @busy_channel.close]
     end
   end

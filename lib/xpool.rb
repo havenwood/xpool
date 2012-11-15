@@ -1,7 +1,8 @@
 class XPool
   require 'json'
-  require 'iprocess'
+  require 'ichannel'
   require 'thread'
+  require 'timeout'
   require_relative "xpool/version"
   require_relative "xpool/process"
   #
@@ -18,6 +19,16 @@ class XPool
       process
     end
     queue_loop
+  end
+
+  #
+  # @return [Boolean]
+  #   Returns false when the pool has active subprocesses.
+  #
+  def shutdown?
+    @pool.none? do |process|
+      process.active?
+    end
   end
 
   #

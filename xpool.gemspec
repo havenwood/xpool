@@ -2,7 +2,7 @@
 require File.expand_path('../lib/xpool/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["Rob Gleeson"]
+  gem.authors       = ["Robert Gleeson"]
   gem.email         = ["rob@flowof.info"]
   gem.description   = %q{Write a gem description}
   gem.summary       = %q{Write a gem summary}
@@ -14,5 +14,5 @@ Gem::Specification.new do |gem|
   gem.name          = "xpool"
   gem.require_paths = ["lib"]
   gem.version       = XPool::VERSION
-  gem.add_runtime_dependency "iprocess", "~> 3.2"
+  gem.add_runtime_dependency 'ichannel', '~> 1.0.0'
 end

@@ -12,7 +12,9 @@ class XPoolTest < Test::Unit::TestCase
   end
 
   def teardown
-    @pool.shutdown!
+    unless @pool.shutdown?
+      @pool.shutdown!
+    end
   end
 
   def test_parallelism 
