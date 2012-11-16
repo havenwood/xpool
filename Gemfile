@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
-
-# Specify your gem's dependencies in xpool.gemspec
+if File.exists? '../ichannel'
+  gem 'ichannel', path: '../ichannel'
+end
 gem 'rake'
 gemspec
