@@ -11,12 +11,16 @@ __OVERVIEW__
 __DESCRIPTION__
 
 A lightweight and fast UNIX(X) Process Pool implementation. The size of the pool
-is dynamic and it can be resized at runtime if needs be. It also has everything
-else you might expect: a way to shutdown gracefully or not so gracefully, 
-graceful shutdowns that time out, & a way to schedule work ('work' is any 
-object that implements `.run`). When the pool becomes busy the work is left on
-a queue and the next available subprocess will come & take it(also as you might
-expect).
+is dynamic and it can be resized at runtime if needs be.  'Units of work' are
+what you can schedule and they are dispatched by the next  available subprocess 
+in the pool. If the pool dries up the units of work are queued & the next 
+available subprocess will pick it up.
+
+There are also all the other features you might expect, such as an interface to 
+shutdown gracefully or to shutdown immediately. Graceful shutdowns can operate 
+within a timeout that when passed shuts down the pool immediately. This is 
+optional, though, and you can  wait forever for a pool to shutdown gracefully 
+if you want. :-) 
 
 __EXAMPLES__
 
