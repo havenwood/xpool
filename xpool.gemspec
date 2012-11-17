@@ -4,8 +4,8 @@ require File.expand_path('../lib/xpool/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Robert Gleeson"]
   gem.email         = ["rob@flowof.info"]
-  gem.description   = %q{Write a gem description}
-  gem.summary       = %q{Write a gem summary}
+  gem.description   = %q{A lightweight and fast UNIX(X) Process Pool implementation}
+  gem.summary       = gem.description
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($\)
