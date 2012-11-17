@@ -1,7 +1,7 @@
 require_relative 'setup'
 class XPoolTest < Test::Unit::TestCase
   class Unit
-    def call
+    def run
       sleep 1
     end
   end
