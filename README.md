@@ -47,7 +47,7 @@ _2._
 A demo of how you'd resize the pool from 10 to 5 subprocesses at runtime:
 
     class Unit
-      def call
+      def run
         sleep 5
       end
     end
@@ -61,7 +61,7 @@ A demo of how you'd gracefully shutdown but force a hard shutdown if 3 seconds
 pass by & all subprocesses have not exited:
 
     class Unit
-      def call
+      def run
         sleep 5
       end
     end
