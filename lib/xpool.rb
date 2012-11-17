@@ -107,8 +107,8 @@ class XPool
   # @return 
   #   (see Process#schedule)
   #
-  def schedule(unit)
-    @channel.put unit
+  def schedule(unit, *args)
+    @channel.put unit: unit, args: args
   end
 
 private
@@ -123,9 +123,9 @@ private
       Thread.new do
         loop do
           begin
-            unit = @channel.get
+            msg = @channel.get
             @busy = true
-            unit.run
+            msg[:unit].run *msg[:args]
           ensure
             @busy = false
           end
