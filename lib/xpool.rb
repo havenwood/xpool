@@ -1,7 +1,6 @@
 class XPool
   require 'json'
   require 'ichannel'
-  require 'thread'
   require 'timeout'
   require_relative "xpool/version"
   require_relative "xpool/process"
@@ -12,22 +11,9 @@ class XPool
   # @return [XPool]
   #
   def initialize(size=10)
-    @queue = Queue.new
-    @pool = Array.new(size) do 
-      process = Process.new
-      process.spawn
-      process
-    end
-    queue_loop
-  end
-
-  #
-  # @return [Boolean]
-  #   Returns false when the pool has active subprocesses.
-  #
-  def shutdown?
-    @pool.none? do |process|
-      process.active?
+    @channel = IChannel.new Marshal
+    @pool = Array.new size do 
+      spawn
     end
   end
 
@@ -57,7 +43,7 @@ class XPool
         shutdown!
       end
     else
-      @pool.each(&:shutdown) 
+      @pool.each(&:shutdown)
     end
   end
 
@@ -122,41 +108,30 @@ class XPool
   #   (see Process#schedule)
   #
   def schedule(unit)
-    process = random_subprocess
-    if process
-      process.schedule unit
-    else
-      @queue.enq unit
-    end
+    @channel.put unit
   end
 
 private
   def spawn
-    Process.new.tap do |process|
-      process.spawn
-    end
-  end
-
-  def random_subprocess
-    available.sample
-  end
-
-  def available
-    @pool.reject do |process|
-      process.busy?
-    end
-  end
-
-  def queue_loop
-    Thread.new do
-      loop do
-        Thread.current[:unit] ||= @queue.deq
-        process = random_subprocess 
-        if process
-          Thread.current[:unit] = nil
-          process.schedule unit
+    pid = fork do
+      trap :SIGUSR1 do
+        while @busy
+          sleep 0.1
         end
+        exit
       end
+      Thread.new do
+        loop do
+          begin
+            unit = @channel.get
+            @busy = true
+            unit.call
+          ensure
+            @busy = false
+          end
+        end
+      end.join
     end
+    Process.new pid 
   end
 end
