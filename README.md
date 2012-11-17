@@ -10,12 +10,13 @@ __OVERVIEW__
 
 __DESCRIPTION__
 
-Provides a UNIX(X) Process Pool that can be used to schedule work. The size of 
-the pool is up to you, and the pool can be dynamically resized at runtime if 
-needs be. The pool also has everything you'd probably expect: an in-memory queue 
-for when the pool becomes dried up (all subprocesses are busy), a way to
-schedule work, a way to shutdown gracefully or not so gracefully, plus time 
-outs on any graceful shutdown.
+A lightweight and fast UNIX(X) Process Pool implementation. The size of the pool
+is dynamic and it can be resized at runtime if needs be. It also has everything
+else you might expect: a way to shutdown gracefully or not so gracefully, 
+graceful shutdowns that time out, & a way to schedule work ('work' is any 
+object that implements `.run`). When the pool becomes busy the work is left on
+a queue and the next available subprocess will come & take it(also as you might
+expect).
 
 __EXAMPLES__
 
@@ -29,8 +30,8 @@ A demo of how you'd create a pool of 10 subprocesses:
     # serialization errors.
     #
     class Unit
-      def call
-        sleep(5)
+      def run
+        sleep 1
       end
     end
     pool = XPool.new 10

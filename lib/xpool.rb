@@ -125,7 +125,7 @@ private
           begin
             unit = @channel.get
             @busy = true
-            unit.call
+            unit.run
           ensure
             @busy = false
           end
