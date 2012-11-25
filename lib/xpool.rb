@@ -115,22 +115,21 @@ private
   def spawn
     pid = fork do
       trap :SIGUSR1 do
-        while @busy
-          sleep 0.1
-        end
-        exit
+        p 'GOT REQUEST.'
+        @shutdown_requested = true 
+        @channel.close
       end
-      Thread.new do
-        loop do
-          begin
-            msg = @channel.get
-            @busy = true
-            msg[:unit].run *msg[:args]
-          ensure
-            @busy = false
+      loop do
+        begin
+          msg = @channel.get
+          msg[:unit].run *msg[:args]
+        ensure
+          if @shutdown_requested
+            p 'EXITING.'
+            break
           end
         end
-      end.join
+      end
     end
     Process.new pid 
   end
