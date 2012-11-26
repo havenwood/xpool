@@ -2,8 +2,18 @@ class XPool
   require 'json'
   require 'ichannel'
   require 'timeout'
+  require 'logger'
   require_relative "xpool/version"
   require_relative "xpool/process"
+
+  def self.debug
+    @debug
+  end
+
+  def self.debug=(boolean)
+    @debug = boolean
+  end
+
   #
   # @param [Fixnum] size
   #   The number of subprocesses to spawn.
@@ -12,6 +22,7 @@ class XPool
   #
   def initialize(size=10)
     @channel = IChannel.new Marshal
+    @logger = Logger.new STDOUT
     @pool = Array.new size do 
       spawn
     end
@@ -112,10 +123,16 @@ class XPool
   end
 
 private
+  def log(msg)
+    if XPool.debug
+      @logger.info msg
+    end
+  end
+
   def spawn
     pid = fork do
       trap :SIGUSR1 do
-        p 'GOT REQUEST.'
+        log "#{::Process.pid} got request to shutdown."
         @shutdown_requested = true 
         @channel.close
       end
@@ -125,7 +142,7 @@ private
           msg[:unit].run *msg[:args]
         ensure
           if @shutdown_requested
-            p 'EXITING.'
+            log "#{::Process.pid} is about to exit."
             break
           end
         end
