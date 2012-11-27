@@ -7,7 +7,16 @@ class XPool
   require_relative "xpool/process"
 
   def self.debug
-    @debug
+    if block_given?
+      begin
+        @debug = true
+        yield
+      ensure
+        @debug = false
+      end
+    else
+      @debug
+    end
   end
 
   def self.debug=(boolean)
@@ -139,7 +148,9 @@ private
       loop do
         begin
           msg = @channel.get
+          if msg
           msg[:unit].run *msg[:args]
+          end
         ensure
           if @shutdown_requested
             log "#{::Process.pid} is about to exit."
