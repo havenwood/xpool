@@ -14,5 +14,5 @@ Gem::Specification.new do |gem|
   gem.name          = "xpool"
   gem.require_paths = ["lib"]
   gem.version       = XPool::VERSION
-  gem.add_runtime_dependency 'ichannel', '~> 3.0.0'
+  gem.add_runtime_dependency 'ichannel', '~> 4.0.0'
 end
