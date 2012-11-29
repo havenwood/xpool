@@ -59,7 +59,7 @@ class XPool
             process.shutdown
           end
         end
-      rescue Timeout::Error => e
+      rescue Timeout::Error
         shutdown!
       end
     else
