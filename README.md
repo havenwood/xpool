@@ -10,7 +10,7 @@ __OVERVIEW__
 
 __DESCRIPTION__
 
-A lightweight and fast UNIX(X) Process Pool implementation. The size of the pool
+A lightweight UNIX(X) Process Pool implementation. The size of the pool
 is dynamic and it can be resized at runtime if needs be.  'Units of work' are
 what you can schedule and they are dispatched by the next  available subprocess 
 in the pool. If the pool dries up the units of work are queued & the next 
