@@ -66,6 +66,7 @@ class XPool
           end
         end
       rescue Timeout::Error
+        XPool.log "'#{timeout}' seconds elapsed, switching to hard shutdown."
         shutdown!
       end
     else
