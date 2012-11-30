@@ -52,7 +52,7 @@ A demo of how you'd resize the pool from 10 to 5 subprocesses at runtime:
       end
     end
     pool = XPool.new 10
-    pool.resize 1..5
+    pool.resize! 1..5
     pool.shutdown
 
 _3._
