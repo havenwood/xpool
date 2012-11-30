@@ -26,7 +26,7 @@ class XPoolTest < Test::Unit::TestCase
   end
 
   def test_resize
-    @pool.resize 1..5
+    @pool.resize! 1..5
     assert_equal 5, @pool.instance_variable_get(:@pool).size
   end
 
