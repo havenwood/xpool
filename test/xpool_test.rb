@@ -7,7 +7,7 @@ class XPoolTest < Test::Unit::TestCase
   end
 
   def setup
-    @pool = XPool.new 10
+    @pool = XPool.new 5
   end
 
   def teardown
@@ -15,18 +15,18 @@ class XPoolTest < Test::Unit::TestCase
   end
   
   def test_parallelism 
-    10.times do 
+    5.times do 
       @pool.schedule Unit.new
     end
     assert_nothing_raised Timeout::Error do
-      Timeout.timeout 3 do 
+      Timeout.timeout 2 do 
         @pool.shutdown
       end
     end
   end
 
   def test_resize! 
-    @pool.resize! 1..5
-    assert_equal 5, @pool.instance_variable_get(:@pool).size
+    @pool.resize! 1..1
+    assert_equal 1, @pool.instance_variable_get(:@pool).size
   end
 end
