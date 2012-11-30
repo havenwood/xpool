@@ -23,6 +23,13 @@ class XPool
     @debug = boolean
   end
 
+  def self.log(msg, type = :info) 
+    @logger = @logger || Logger.new(STDOUT)
+    if @debug
+      @logger.public_send type, msg
+    end
+  end
+
   #
   # @param [Fixnum] size
   #   The number of subprocesses to spawn.
@@ -31,7 +38,6 @@ class XPool
   #
   def initialize(size=10)
     @channel = IChannel.new Marshal
-    @logger = Logger.new STDOUT
     @pool = Array.new size do 
       spawn
     end
@@ -112,16 +118,10 @@ class XPool
   end
 
 private
-  def log(msg)
-    if XPool.debug
-      @logger.info msg
-    end
-  end
-
   def spawn
     pid = fork do
       trap :SIGUSR1 do
-        log "#{::Process.pid} got request to shutdown."
+        XPool.log "#{::Process.pid} got request to shutdown."
         @shutdown_requested = true 
       end
       loop do
@@ -139,7 +139,7 @@ private
           end
         ensure
           if @shutdown_requested && !@channel.readable?
-            log "#{::Process.pid} is about to exit."
+            XPool.log "#{::Process.pid} is about to exit."
             break
           end
         end
