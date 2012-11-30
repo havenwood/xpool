@@ -143,16 +143,22 @@ private
       trap :SIGUSR1 do
         log "#{::Process.pid} got request to shutdown."
         @shutdown_requested = true 
-        @channel.close
       end
       loop do
         begin
-          msg = @channel.get
-          if msg
-          msg[:unit].run *msg[:args]
+          #
+          # I've noticed that select can wait an infinite amount of time for 
+          # a UNIXSocket to become readable. It usually happens on the tenth or 
+          # so iteration. By checking if we have data to read first we elimate 
+          # this problem but it is a band aid for a bigger issue I don't 
+          # understand right now.
+          #
+          if @channel.readable?
+            msg = @channel.get
+            msg[:unit].run *msg[:args]
           end
         ensure
-          if @shutdown_requested
+          if @shutdown_requested && !@channel.readable?
             log "#{::Process.pid} is about to exit."
             break
           end

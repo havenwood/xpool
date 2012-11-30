@@ -8,7 +8,6 @@ class XPoolTest < Test::Unit::TestCase
 
   def setup
     @pool = XPool.new 10
-    @members = @pool.instance_variable_get(:@pool)
   end
 
   def teardown
@@ -20,7 +19,7 @@ class XPoolTest < Test::Unit::TestCase
       @pool.schedule Unit.new
     end
     assert_nothing_raised Timeout::Error do
-      Timeout.timeout 2 do 
+      Timeout.timeout 3 do 
         @pool.shutdown
       end
     end

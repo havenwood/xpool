@@ -1,4 +1,6 @@
 source 'http://rubygems.org'
-gem 'rake'
-gem 'turn'
+group :development do
+  gem 'rake'
+  gem 'ichannel', path: '../ichannel' if File.exists? '../ichannel'
+end
 gemspec
