@@ -77,39 +77,19 @@ class XPool
   end
 
   #
-  # Resize the pool. 
-  # All subprocesses in the pool are gracefully shutdown through {#shutdown} and
-  # a new pool the size of _range_ is created. 
+  # Resize the pool.
+  # All subprocesses in the pool are abruptly stopped through {#shutdown!} and 
+  # a new pool the size of _range_ is created.
   #
   # @example
   #   pool = XPool.new 10
-  #   pool.resize 1..5 
+  #   pool.resiz!e 1..5 
   #   pool.shutdown
   #
   # @param [Range] range
   #   The new size of the pool.
   #
   # @return [void]
-  #
-  def resize(range)
-    shutdown
-    @pool = range.to_a.map do 
-      spawn
-    end
-  end
-
-  #
-  # Resize the pool.
-  # All subprocesses in the pool are abruptly stopped through {#shutdown!} and 
-  # a new pool the size of _range_ is created.
-  #
-  # @param 
-  #   (see #resize)
-  #
-  # @return
-  #   (see #resize)
-  #
-  # @see XPool#resize
   #
   def resize!(range)
     shutdown!
