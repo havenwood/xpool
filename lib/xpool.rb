@@ -36,7 +36,7 @@ class XPool
   #
   # @return [XPool]
   #
-  def initialize(size=10)
+  def initialize(size=5)
     @channel = IChannel.new Marshal
     @pool = Array.new size do 
       spawn
