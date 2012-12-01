@@ -23,6 +23,7 @@ class XPoolTest < Test::Unit::TestCase
       return @run if defined?(@run)
       @run = File.read(@path) == 'true'
       FileUtils.rm_rf @path
+      @run
     end
   end
 
