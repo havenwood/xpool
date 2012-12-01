@@ -89,8 +89,8 @@ class XPool
   # a new pool the size of _range_ is created.
   #
   # @example
-  #   pool = XPool.new 10
-  #   pool.resiz!e 1..5 
+  #   pool = XPool.new 5
+  #   pool.resize! 1..3 
   #   pool.shutdown
   #
   # @param [Range] range

@@ -25,7 +25,7 @@ __EXAMPLES__
 
 _1._
 
-A demo of how you'd create a pool of 10 subprocesses:
+A demo of how you'd create a pool of 5 subprocesses:
 
 ```ruby
 #
@@ -38,7 +38,7 @@ class Unit
     sleep 1
   end
 end
-pool = XPool.new 10
+pool = XPool.new 5
 5.times { pool.schedule Unit.new }
 pool.shutdown
 ```
@@ -68,7 +68,7 @@ class Unit
     sleep 5
   end
 end
-pool = XPool.new 10
+pool = XPool.new 5
 pool.schedule Unit.new
 pool.shutdown 3
 ```
