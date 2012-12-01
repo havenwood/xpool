@@ -27,46 +27,51 @@ _1._
 
 A demo of how you'd create a pool of 10 subprocesses:
 
-    #
-    # Make sure you define your units of work before
-    # you create a process pool or you'll get strange
-    # serialization errors.
-    #
-    class Unit
-      def run
-        sleep 1
-      end
-    end
-    pool = XPool.new 10
-    5.times { pool.schedule Unit.new }
-    pool.shutdown
+```ruby
+#
+# Make sure you define your units of work before
+# you create a process pool or you'll get strange
+# serialization errors.
+#
+class Unit
+  def run
+    sleep 1
+  end
+end
+pool = XPool.new 10
+5.times { pool.schedule Unit.new }
+pool.shutdown
+```
 
 _2._
 
 A demo of how you'd resize the pool from 10 to 5 subprocesses at runtime:
 
-    class Unit
-      def run
-        sleep 5
-      end
-    end
-    pool = XPool.new 10
-    pool.resize! 1..5
-    pool.shutdown
-
+```ruby
+class Unit
+  def run
+    sleep 5
+  end
+end
+pool = XPool.new 10
+pool.resize! 1..5
+pool.shutdown
+```
 _3._
 
 A demo of how you'd gracefully shutdown but force a hard shutdown if 3 seconds
 pass by & all subprocesses have not exited:
 
-    class Unit
-      def run
-        sleep 5
-      end
-    end
-    pool = XPool.new 10
-    pool.schedule Unit.new
-    pool.shutdown 3
+```ruby
+class Unit
+  def run
+    sleep 5
+  end
+end
+pool = XPool.new 10
+pool.schedule Unit.new
+pool.shutdown 3
+```
 
 __INSTALL__
 
