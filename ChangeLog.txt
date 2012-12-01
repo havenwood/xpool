@@ -1,0 +1,2 @@
+== HEAD
+	* Change the default number of subprocesses to spawn in a pool from 10 to 5.
