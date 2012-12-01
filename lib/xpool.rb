@@ -1,5 +1,4 @@
 class XPool
-  require 'json'
   require 'ichannel'
   require 'timeout'
   require 'logger'
