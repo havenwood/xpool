@@ -139,7 +139,7 @@ private
             msg[:unit].run *msg[:args]
           end
         ensure
-          if @shutdown_requested && !@channel.readable?
+          if @shutdown_requested && @channel.empty?
             XPool.log "#{::Process.pid} is about to exit."
             break
           end
