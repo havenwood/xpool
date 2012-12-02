@@ -12,9 +12,9 @@ __DESCRIPTION__
 
 A lightweight UNIX(X) Process Pool implementation. The size of the pool
 is dynamic and it can be resized at runtime if needs be. 'Units of work' are
-what you can schedule and they are dispatched by a subprocess in the pool. If 
-the pool dries up(all processes are busy) the units of work are queued & the 
-next available subprocess will pick it up.
+what you can schedule and each unit of work is dispatched by a free subprocess 
+in the the pool. If the pool dries up(all subprocesses are busy) the units 
+of work are queued & the next available subprocess will pick it up.
 
 There are also all the other features you might expect, such as an interface to 
 shutdown gracefully or to shutdown immediately. Graceful shutdowns can operate 
