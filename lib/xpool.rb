@@ -2,6 +2,7 @@ class XPool
   require 'ichannel'
   require 'timeout'
   require 'logger'
+  require 'rbconfig'
   require_relative "xpool/version"
   require_relative "xpool/process"
 
@@ -28,14 +29,14 @@ class XPool
       @logger.public_send type, msg
     end
   end
-
+  
   #
   # @param [Fixnum] size
   #   The number of subprocesses to spawn.
   #
   # @return [XPool]
   #
-  def initialize(size=5)
+  def initialize(size=number_of_cpu_cores)
     @channel = IChannel.new Marshal
     @pool = Array.new size do 
       spawn
@@ -144,5 +145,21 @@ private
       end
     end
     Process.new pid 
+  end
+  
+  #
+  # Count the number of CPU cores available.
+  #
+  def number_of_cpu_cores
+    case RbConfig::CONFIG['host_os']
+    when /linux/
+      Dir.glob('/sys/devices/system/cpu/cpu[0-9]*').count
+    when /darwin|bsd/
+      Integer(`sysctl -n hw.ncpu`)
+    when /solaris/
+      Integer(`kstat -m cpu_info | grep -w core_id | uniq | wc -l`)
+    else
+      5
+    end
   end
 end
