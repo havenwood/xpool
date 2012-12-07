@@ -60,9 +60,7 @@ class XPool
     if timeout
       begin
         Timeout.timeout(timeout) do
-          @pool.each do |process|
-            process.shutdown
-          end
+          @pool.each(&:shutdown)
         end
       rescue Timeout::Error
         XPool.log "'#{timeout}' seconds elapsed, switching to hard shutdown."
