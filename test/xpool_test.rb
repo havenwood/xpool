@@ -10,7 +10,7 @@ class XPoolTest < Test::Unit::TestCase
     def initialize
       file = Tempfile.new '__xpool_test'
       @path = file.path
-      file.close
+      file.close false
     end
 
     def run
