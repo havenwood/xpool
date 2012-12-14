@@ -10,7 +10,7 @@ __OVERVIEW__
 
 __DESCRIPTION__
 
-A lightweight UNIX(X) Process Pool implementation. The size of the pool
+A lightweight UNIX(X) Process Pool written in Ruby. The size of the pool
 is dynamic and it can be resized at runtime if needs be. 'Units of work' are
 what you can schedule and each unit of work is dispatched by a free subprocess 
 in the the pool. If the pool dries up(all subprocesses are busy) the units 
