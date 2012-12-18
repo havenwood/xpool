@@ -73,6 +73,28 @@ pool.schedule Unit.new
 pool.shutdown 3
 ```
 
+__DEBUGGING OUTPUT__
+
+XPool can print helpful debugging information to you if you set `XPool.debug` 
+to true:
+
+```ruby
+XPool.debug = true
+```
+
+You can temporarily enable debugging output for the duration of a block:
+
+```ruby
+XPool.debug do 
+  pool = XPool.new 5
+  pool.shutdown
+end
+```
+
+The debugging output includes information about events such as when a subprocess
+is about to exit, when a subprocess has been told to exit, and when the pool is 
+switching to a hard shutdown (in case of the graceful shutdown timing out).
+
 __INSTALL__
 
     $ gem install xpool
