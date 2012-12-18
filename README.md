@@ -93,7 +93,7 @@ end
 
 The debugging output includes information about events such as when a subprocess
 is about to exit, when a subprocess has been told to exit, and when the pool is 
-switching to a hard shutdown (in case of the graceful shutdown timing out).
+switching to a hard shutdown (in case of a graceful shutdown timing out).
 
 __INSTALL__
 
