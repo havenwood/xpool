@@ -75,7 +75,7 @@ pool.shutdown 3
 
 __DEBUGGING OUTPUT__
 
-XPool can print helpful debugging information to you if you set `XPool.debug` 
+XPool can print helpful debugging information if you set `XPool.debug` 
 to true:
 
 ```ruby
