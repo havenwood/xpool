@@ -4,7 +4,7 @@ __OVERVIEW__
 |:----------------|:--------------------------------------------------
 | Homepage        | https://github.com/robgleeson/xpool
 | Documentation   | http://rubydoc.info/gems/xpool/frames 
-| CI              | [![Build Status](https://travis-ci.org/robgleeson/XPool.png)](https://travis-ci.org/robgleeson/XPool)
+| CI              | [![Build Status](https://travis-ci.org/robgleeson/xpool.png)](https://travis-ci.org/robgleeson/XPool)
 | Author          | Rob Gleeson             
 
 
