@@ -82,7 +82,7 @@ to true:
 XPool.debug = true
 ```
 
-You can temporarily enable debugging output for the duration of a block:
+Or you can temporarily enable debugging output for the duration of a block:
 
 ```ruby
 XPool.debug do 
@@ -91,9 +91,8 @@ XPool.debug do
 end
 ```
 
-The debugging output includes information about events such as when a subprocess
-is about to exit, when a subprocess has been told to exit, and when the pool is 
-switching to a hard shutdown (in case of a graceful shutdown timing out).
+The debugging information you'll see is all about how the pool is operating. 
+It can be interesting to look over even if you're not bug hunting.
 
 __INSTALL__
 
