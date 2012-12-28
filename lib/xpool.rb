@@ -23,13 +23,13 @@ class XPool
     @debug = boolean
   end
 
-  def self.log(msg, type = :info) 
+  def self.log(msg, type = :info)
     @logger = @logger || Logger.new(STDOUT)
     if @debug
       @logger.public_send type, msg
     end
   end
-  
+
   #
   # @param [Fixnum] size
   #   The number of subprocesses to spawn.
@@ -38,7 +38,7 @@ class XPool
   #
   def initialize(size=number_of_cpu_cores)
     @channel = IChannel.new Marshal
-    @pool = Array.new size do 
+    @pool = Array.new size do
       spawn
     end
   end
@@ -46,15 +46,15 @@ class XPool
   #
   # A graceful shutdown of the pool.
   #
-  # All busy subprocesses finish up any code they're running & exit normally 
+  # All busy subprocesses finish up any code they're running & exit normally
   # afterwards.
   #
-  # @param [Fixnum] timeout 
+  # @param [Fixnum] timeout
   #   An optional amount of seconds to wait before forcing a shutdown through
   #   {#shutdown!}.
   #
   # @see XPool::Process#spawn
-  # 
+  #
   # @return [void]
   #
   def shutdown(timeout=nil)
@@ -83,12 +83,12 @@ class XPool
 
   #
   # Resize the pool.
-  # All subprocesses in the pool are abruptly stopped through {#shutdown!} and 
+  # All subprocesses in the pool are abruptly stopped through {#shutdown!} and
   # a new pool the size of _range_ is created.
   #
   # @example
   #   pool = XPool.new 5
-  #   pool.resize! 1..3 
+  #   pool.resize! 1..3
   #   pool.shutdown
   #
   # @param [Range] range
@@ -106,14 +106,24 @@ class XPool
   #
   # Dispatch a unit of work in a subprocess.
   #
-  # @param 
+  # @param
   #   (see Process#schedule)
   #
-  # @return 
+  # @return
   #   (see Process#schedule)
   #
   def schedule(unit, *args)
     @channel.put unit: unit, args: args
+  end
+
+  #
+  # @return [Fixnum]
+  #   Returns the number of alive subprocesses in the pool.
+  #
+  def size
+    @pool.count do |process|
+      process.active?
+    end
   end
 
 private
@@ -121,15 +131,15 @@ private
     pid = fork do
       trap :SIGUSR1 do
         XPool.log "#{::Process.pid} got request to shutdown."
-        @shutdown_requested = true 
+        @shutdown_requested = true
       end
       loop do
         begin
           #
-          # I've noticed that select can wait an infinite amount of time for 
-          # a UNIXSocket to become readable. It usually happens on the tenth or 
-          # so iteration. By checking if we have data to read first we elimate 
-          # this problem but it is a band aid for a bigger issue I don't 
+          # I've noticed that select can wait an infinite amount of time for
+          # a UNIXSocket to become readable. It usually happens on the tenth or
+          # so iteration. By checking if we have data to read first we elimate
+          # this problem but it is a band aid for a bigger issue I don't
           # understand right now.
           #
           if @channel.readable?
@@ -144,9 +154,9 @@ private
         end
       end
     end
-    Process.new pid 
+    Process.new pid
   end
-  
+
   #
   # Count the number of CPU cores available.
   #

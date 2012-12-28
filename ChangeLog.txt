@@ -1,3 +1,7 @@
+== HEAD
+	* Add XPool#size.
+	It returns the number of active subprocesses in the pool.
+
 == v0.2.0
 	* Minor README & API documentation improvements.
 	* Change the default number of subprocesses to spawn in a pool from 10 to 5.

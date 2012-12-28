@@ -34,9 +34,21 @@ class XPoolTest < Test::Unit::TestCase
   def teardown
     @pool.shutdown
   end
-  
 
-  def test_queue 
+
+  def test_size_with_graceful_shutdown
+    assert_equal 5, @pool.size
+    @pool.shutdown
+    assert_equal 0, @pool.size
+  end
+
+  def test_size_with_forceful_shutdown
+    assert_equal 5, @pool.size
+    @pool.shutdown!
+    assert_equal 0, @pool.size
+  end
+
+  def test_queue
     @pool.resize! 1..1
     units = Array.new(5) { XUnit.new }
     units.each do |unit|
@@ -48,18 +60,18 @@ class XPoolTest < Test::Unit::TestCase
     end
   end
 
-  def test_parallelism 
-    5.times do 
+  def test_parallelism
+    5.times do
       @pool.schedule Unit.new
     end
     assert_nothing_raised Timeout::Error do
-      Timeout.timeout 2 do 
+      Timeout.timeout 2 do
         @pool.shutdown
       end
     end
   end
 
-  def test_resize! 
+  def test_resize!
     @pool.resize! 1..1
     assert_equal 1, @pool.instance_variable_get(:@pool).size
   end
