@@ -31,9 +31,9 @@ class XPool::Process
 
   #
   # @return [Boolean]
-  #   Returns true when the process is active.
+  #   Returns true when the process is alive.
   #
-  def active?
+  def alive?
     !dead?
   end
 

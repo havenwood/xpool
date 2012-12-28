@@ -122,7 +122,7 @@ class XPool
   #
   def size
     @pool.count do |process|
-      process.active?
+      process.alive?
     end
   end
 
