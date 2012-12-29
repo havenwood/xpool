@@ -1,4 +1,4 @@
-== HEAD
+== v0.3.0
 	* Add XPool#size.
 	It returns the number of alive subprocesses in the pool.
 
