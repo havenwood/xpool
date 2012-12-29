@@ -135,13 +135,6 @@ private
       end
       loop do
         begin
-          #
-          # I've noticed that select can wait an infinite amount of time for
-          # a UNIXSocket to become readable. It usually happens on the tenth or
-          # so iteration. By checking if we have data to read first we elimate
-          # this problem but it is a band aid for a bigger issue I don't
-          # understand right now.
-          #
           if @channel.readable?
             msg = @channel.get
             msg[:unit].run *msg[:args]
