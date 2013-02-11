@@ -10,11 +10,13 @@ __OVERVIEW__
 
 __DESCRIPTION__
 
-A lightweight UNIX(X) Process Pool written in Ruby. The size of the pool
-is dynamic and it can be resized at runtime if needs be. 'Units of work' are
-what you can schedule and each unit of work is dispatched by a free subprocess 
-in the the pool. If the pool dries up(all subprocesses are busy) the units 
-of work are queued & the next available subprocess will pick it up.
+XPool is a lightweight UNIX(X) Process Pool. The pool is dynamic in the sense
+that you can resize the pool at runtime. The pool can be used to schedule 
+'units of work' that are defined as any object that implements the 'run' 
+method. A 'unit of work' is run by a dedicated subprocess in the pool but if 
+the pool is dry(i.e: all subprocesses are busy executing work) there is a 
+simple queue that ensures the next free subprocess picks up work that is left
+on the queue.
 
 There are also all the other features you might expect, such as an interface to 
 shutdown gracefully or to shutdown immediately. Graceful shutdowns can operate 
@@ -48,11 +50,6 @@ _2._
 A demo of how you'd resize the pool from 10 to 5 subprocesses at runtime:
 
 ```ruby
-class Unit
-  def run
-    sleep 5
-  end
-end
 pool = XPool.new 10
 pool.resize! 1..5
 pool.shutdown
