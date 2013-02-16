@@ -127,6 +127,11 @@ class XPool
     if process
       process.schedule unit, *args
     else
+      #
+      # FIXME:
+      # Picking a random process means we could swamp one process instead of
+      # distributing the work evenly.
+      #
       random_process = @pool.sample
       random_process.schedule unit, *args
     end
