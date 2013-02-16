@@ -83,6 +83,7 @@ class Unit
 end
 pool = XPool.new 5
 pool.broadcast Unit.new
+pool.shutdown
 ```
 
 __DEBUGGING OUTPUT__
