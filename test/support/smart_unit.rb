@@ -1,3 +1,4 @@
+require 'tempfile'
 module XPool::Support
   class SmartUnit
     def initialize
