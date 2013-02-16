@@ -46,7 +46,7 @@ class XPoolTest < Test::Unit::TestCase
       @pool.schedule SleepUnit.new
     end
     assert_nothing_raised Timeout::Error do
-      Timeout.timeout 1.5 do
+      Timeout.timeout 2 do
         @pool.shutdown
       end
     end
