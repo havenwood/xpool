@@ -10,7 +10,7 @@ module XPool::Support
     def run
       File.open @path, 'w' do |f|
         f.write 'true'
-        sleep 1
+        sleep 0.1
       end
     end
 
