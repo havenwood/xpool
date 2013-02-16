@@ -3,8 +3,10 @@ class XPool::Process
   # @param [Fixnum] id
   #   The Process ID.
   #
-  def initialize(id)
-    @id = id
+  def initialize
+    @channel = IChannel.new Marshal
+    @busy_channel = IChannel.new Marshal
+    @id = spawn
   end
 
   #
@@ -20,6 +22,10 @@ class XPool::Process
     _shutdown 'SIGUSR1'
   end
 
+  def schedule(unit,*args)
+    @channel.put unit: unit, args: args
+  end
+
   #
   # A non-graceful shutdown through SIGKILL.
   #
@@ -27,6 +33,20 @@ class XPool::Process
   #
   def shutdown!
     _shutdown 'SIGKILL'
+  end
+
+  #
+  # @return [Boolean]
+  #   Returns true when the process is executing work.
+  #
+  def busy?
+    if dead?
+      false
+    elsif @busy_channel.readable?
+      @busy = @busy_channel.get
+    else
+      @busy
+    end
   end
 
   #
@@ -45,7 +65,34 @@ class XPool::Process
     @dead
   end
 
+  def busy!
+    @busy = true
+  end
+
 private
+  def spawn
+    fork do
+      trap :SIGUSR1 do
+        XPool.log "#{::Process.pid} got request to shutdown."
+        @shutdown_requested = true
+      end
+      loop do
+        begin
+          if @channel.readable?
+            msg = @channel.get
+            msg[:unit].run *msg[:args]
+            @busy_channel.put false
+          end
+        ensure
+          if @shutdown_requested && !@channel.readable?
+            XPool.log "#{::Process.pid} is about to exit."
+            break
+          end
+        end
+      end
+    end
+  end
+
   def _shutdown(sig)
     begin
       Process.kill sig, @id

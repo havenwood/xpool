@@ -70,6 +70,21 @@ pool.schedule Unit.new
 pool.shutdown 3
 ```
 
+_4._
+
+A demo of how you'd distribute a single unit of work to be run across all 
+subprocesses in the pool:
+
+```ruby
+class Unit
+  def run
+    puts Process.pid
+  end
+end
+pool = XPool.new 5
+pool.broadcast Unit.new
+```
+
 __DEBUGGING OUTPUT__
 
 XPool can print helpful debugging information if you set `XPool.debug` 

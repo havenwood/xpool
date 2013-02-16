@@ -37,9 +37,22 @@ class XPool
   # @return [XPool]
   #
   def initialize(size=number_of_cpu_cores)
-    @channel = IChannel.new Marshal
-    @pool = Array.new size do
-      spawn
+    @pool = Array.new(size) { Process.new }
+  end
+
+  #
+  # Broadcasts _unit_ to be run across all subprocesses in the pool.
+  #
+  # @example
+  #   pool = XPool.new 5
+  #   pool.broadcast unit
+  #
+  # @return [void]
+  #
+  def broadcast(unit, *args)
+    @pool.each do |process|
+      process.busy!
+      process.schedule unit, *args
     end
   end
 
@@ -98,9 +111,7 @@ class XPool
   #
   def resize!(range)
     shutdown!
-    @pool = range.to_a.map do
-      spawn
-    end
+    @pool = range.to_a.map { Process.new }
   end
 
   #
@@ -112,8 +123,15 @@ class XPool
   # @return
   #   (see Process#schedule)
   #
-  def schedule(unit, *args)
-    @channel.put unit: unit, args: args
+  def schedule(unit,*args)
+    process = @pool.find { |process| !process.busy? }
+    if process
+      process.busy!
+      process.schedule unit, *args
+    else
+      random_process = @pool.sample
+      random_process.schedule unit, *args
+    end
   end
 
   #
@@ -124,30 +142,6 @@ class XPool
     @pool.count do |process|
       process.alive?
     end
-  end
-
-private
-  def spawn
-    pid = fork do
-      trap :SIGUSR1 do
-        XPool.log "#{::Process.pid} got request to shutdown."
-        @shutdown_requested = true
-      end
-      loop do
-        begin
-          if @channel.readable?
-            msg = @channel.get
-            msg[:unit].run *msg[:args]
-          end
-        ensure
-          if @shutdown_requested && !@channel.readable?
-            XPool.log "#{::Process.pid} is about to exit."
-            break
-          end
-        end
-      end
-    end
-    Process.new pid
   end
 
   #

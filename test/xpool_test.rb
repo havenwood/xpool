@@ -10,6 +10,13 @@ class XPoolTest < Test::Unit::TestCase
     @pool.shutdown
   end
 
+  def test_broadcast
+    @pool.broadcast SleepUnit.new
+    @pool.instance_variable_get(:@pool).each do |process|
+      assert process.busy?
+    end
+  end
+
   def test_size_with_graceful_shutdown
     assert_equal 5, @pool.size
     @pool.shutdown
@@ -39,7 +46,7 @@ class XPoolTest < Test::Unit::TestCase
       @pool.schedule SleepUnit.new
     end
     assert_nothing_raised Timeout::Error do
-      Timeout.timeout 2 do
+      Timeout.timeout 1.5 do
         @pool.shutdown
       end
     end
