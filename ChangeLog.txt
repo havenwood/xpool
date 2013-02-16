@@ -1,3 +1,15 @@
+== HEAD
+	- XPool#schedule returns a XPool::Process object.
+		The process that has been picked to run your unit of work is returned 
+		by schedule in case you want to interact with the process later on.
+
+	- Add XPool#broadcast
+		The broadcast method can distribute one unit of work across all 
+		subprocesses in the pool.
+
+	- Add XPool::Process#busy?
+		It tells you whether or not a process is executing work.
+
 == v0.3.0
 	* Add XPool#size.
 	It returns the number of alive subprocesses in the pool.
