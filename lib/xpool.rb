@@ -120,8 +120,8 @@ class XPool
   # @param
   #   (see Process#schedule)
   #
-  # @return
-  #   (see Process#schedule)
+  # @return [XPool::Process]
+  #   Returns an instance of XPool::Process.
   #
   def schedule(unit,*args)
     process = @pool.find { |process| !process.busy? }
@@ -132,6 +132,7 @@ class XPool
       random_process = @pool.sample
       random_process.schedule unit, *args
     end
+    process || random_process
   end
 
   #
