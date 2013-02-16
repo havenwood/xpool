@@ -51,7 +51,6 @@ class XPool
   #
   def broadcast(unit, *args)
     @pool.each do |process|
-      process.busy!
       process.schedule unit, *args
     end
   end
@@ -126,7 +125,6 @@ class XPool
   def schedule(unit,*args)
     process = @pool.find { |process| !process.busy? }
     if process
-      process.busy!
       process.schedule unit, *args
     else
       random_process = @pool.sample

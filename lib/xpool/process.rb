@@ -23,6 +23,7 @@ class XPool::Process
   end
 
   def schedule(unit,*args)
+    @busy = true
     @channel.put unit: unit, args: args
   end
 
@@ -65,10 +66,6 @@ class XPool::Process
     @dead
   end
 
-  def busy!
-    @busy = true
-  end
-
 private
   def spawn
     fork do
@@ -79,6 +76,7 @@ private
       loop do
         begin
           if @channel.readable?
+            @busy_channel.put true
             msg = @channel.get
             msg[:unit].run *msg[:args]
             @busy_channel.put false
