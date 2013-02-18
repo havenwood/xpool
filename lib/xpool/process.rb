@@ -7,6 +7,7 @@ class XPool::Process
     @channel = IChannel.new Marshal
     @busy_channel = IChannel.new Marshal
     @id = spawn
+    @busy = false
   end
 
   #
