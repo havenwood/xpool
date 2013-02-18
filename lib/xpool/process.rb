@@ -5,8 +5,9 @@ class XPool::Process
   #
   def initialize
     @channel = IChannel.new Marshal
-    @busy_channel = IChannel.new Marshal
     @id = spawn
+    trap(:SIGUSR1) { @busy = true }
+    trap(:SIGUSR2) { @busy = false }
   end
 
   #
@@ -43,8 +44,6 @@ class XPool::Process
   def busy?
     if dead?
       false
-    elsif @busy_channel.readable?
-      @busy = @busy_channel.get
     else
       @busy
     end
@@ -76,10 +75,10 @@ private
       loop do
         begin
           if @channel.readable?
-            @busy_channel.put true
+            Process.kill 'SIGUSR1', Process.ppid
             msg = @channel.get
             msg[:unit].run *msg[:args]
-            @busy_channel.put false
+            Process.kill 'SIGUSR2', Process.ppid
           end
         ensure
           if @shutdown_requested && !@channel.readable?
