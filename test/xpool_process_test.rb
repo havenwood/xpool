@@ -5,9 +5,10 @@ class XPoolProcessTest < Test::Unit::TestCase
   end
 
   def test_busy_method
-    @process.schedule IOWriter.new
-    assert @process.busy?, 'Expected process to be busy'
+    @process.schedule Sleeper.new(0.5)
     sleep 0.1
+    assert @process.busy?, 'Expected process to be busy'
+    sleep 0.4
     refute @process.busy?, 'Expected process to not be busy'
   end
 
