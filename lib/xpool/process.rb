@@ -20,11 +20,7 @@ class XPool::Process
   # @return [void]
   #
   def shutdown
-    _shutdown 'SIGUSR1'
-  end
-
-  def schedule(unit,*args)
-    @channel.put unit: unit, args: args
+    _shutdown 'SIGUSR1' unless dead?
   end
 
   #
@@ -33,7 +29,11 @@ class XPool::Process
   # @return [void]
   #
   def shutdown!
-    _shutdown 'SIGKILL'
+    _shutdown 'SIGKILL' unless dead?
+  end
+
+  def schedule(unit,*args)
+    @channel.put unit: unit, args: args
   end
 
   #

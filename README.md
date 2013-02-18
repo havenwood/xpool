@@ -35,65 +35,65 @@ A demo of how you'd create a pool of 5 subprocesses:
 # you create a process pool or you'll get strange
 # serialization errors.
 #
-  class Unit
-    def run
-      sleep 1
-    end
+class Unit
+  def run
+    sleep 1
   end
-  pool = XPool.new 5
-  5.times { pool.schedule Unit.new }
-  pool.shutdown
-  ```
+end
+pool = XPool.new 5
+5.times { pool.schedule Unit.new }
+pool.shutdown
+```
 
-  _2._
+_2._
 
-  A demo of how you'd resize the pool from 10 to 5 subprocesses at runtime:
+A demo of how you'd resize the pool from 10 to 5 subprocesses at runtime:
 
-  ```ruby
-  pool = XPool.new 10
-  pool.resize! 1..5
-  pool.shutdown
-  ```
-  _3._
+```ruby
+pool = XPool.new 10
+pool.resize! 1..5
+pool.shutdown
+```
+_3._
 
-  A demo of how you'd gracefully shutdown but force a hard shutdown if 3 seconds
-  pass by & all subprocesses have not exited:
+A demo of how you'd gracefully shutdown but force a hard shutdown if 3 seconds
+pass by & all subprocesses have not exited:
 
-  ```ruby
-  class Unit
-    def run
-      sleep 5
-    end
+```ruby
+class Unit
+  def run
+    sleep 5
   end
-  pool = XPool.new 5
-  pool.schedule Unit.new
-  pool.shutdown 3
-  ```
+end
+pool = XPool.new 5
+pool.schedule Unit.new
+pool.shutdown 3
+```
 
-  _4._
+_4._
 
-  A demo of how you'd distribute a single unit of work to be run across all 
-  subprocesses in the pool:
+A demo of how you'd distribute a single unit of work to be run across all 
+subprocesses in the pool:
 
-  ```ruby
-  class Unit
-    def run
-      puts Process.pid
-    end
+```ruby
+class Unit
+  def run
+    puts Process.pid
   end
-  pool = XPool.new 5
-  pool.broadcast Unit.new
-  pool.shutdown
-  ```
+end
+pool = XPool.new 5
+pool.broadcast Unit.new
+pool.shutdown
+```
 
-  __DEBUGGING OUTPUT__
+__DEBUGGING OUTPUT__
 
-  XPool can print helpful debugging information if you set `XPool.debug` 
-  to true:
+XPool can print helpful debugging information if you set `XPool.debug` 
+to true:
 
-  ```ruby
-  XPool.debug = true
-  ```
+```ruby
+XPool.debug = true
+```
 
 Or you can temporarily enable debugging output for the duration of a block:
 
