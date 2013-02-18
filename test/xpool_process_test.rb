@@ -17,7 +17,7 @@ class XPoolProcessTest < Test::Unit::TestCase
   end
 
   def test_busy_method_on_dead_process
-    @process.schedule IOWriter.new
+    @process.schedule Sleeper.new(1)
     @process.shutdown!
     refute @process.busy?
   end
