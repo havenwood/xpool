@@ -24,7 +24,6 @@ class XPool::Process
   end
 
   def schedule(unit,*args)
-    @busy = true
     @channel.put unit: unit, args: args
   end
 
@@ -75,8 +74,8 @@ private
       loop do
         begin
           if @channel.readable?
-            Process.kill 'SIGUSR1', Process.ppid
             msg = @channel.get
+            Process.kill 'SIGUSR1', Process.ppid
             msg[:unit].run *msg[:args]
             Process.kill 'SIGUSR2', Process.ppid
           end
