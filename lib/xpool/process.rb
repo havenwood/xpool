@@ -43,7 +43,10 @@ class XPool::Process
     if dead?
       false
     elsif @busy_channel.readable?
-      @busy = @busy_channel.get
+      begin
+        @busy = @busy_channel.get
+      end while @busy_channel.readable?
+      @busy
     else
       @busy
     end
