@@ -23,7 +23,6 @@ class XPool::Process
   end
 
   def schedule(unit,*args)
-    @busy = true
     @channel.put unit: unit, args: args
   end
 
