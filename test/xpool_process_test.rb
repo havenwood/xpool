@@ -4,6 +4,10 @@ class XPoolProcessTest < Test::Unit::TestCase
     @process = XPool::Process.new
   end
 
+  def teardown
+    @process.shutdown
+  end
+
   def test_busy_method
     @process.schedule Sleeper.new(0.5)
     sleep 0.1
