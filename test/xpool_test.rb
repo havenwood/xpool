@@ -9,9 +9,9 @@ class XPoolTest < Test::Unit::TestCase
   end
 
   def test_broadcast
-    @pool.broadcast IOWriter.new
+    @pool.broadcast Sleeper.new(1)
     @pool.instance_variable_get(:@pool).each do |process|
-      assert process.busy?
+      assert process.busy?, 'Expected process to be busy'
     end
   end
 
