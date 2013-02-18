@@ -1,7 +1,5 @@
 require_relative 'setup'
 class XPoolTest < Test::Unit::TestCase
-  include XPool::Support
-
   def setup
     @pool = XPool.new 5
   end
@@ -11,7 +9,7 @@ class XPoolTest < Test::Unit::TestCase
   end
 
   def test_broadcast
-    @pool.broadcast SleepUnit.new
+    @pool.broadcast IOWriter.new
     @pool.instance_variable_get(:@pool).each do |process|
       assert process.busy?
     end
@@ -31,7 +29,7 @@ class XPoolTest < Test::Unit::TestCase
 
   def test_queue
     @pool.resize! 1..1
-    units = Array.new(5) { SmartUnit.new }
+    units = Array.new(5) { IOWriter.new }
     units.each do |unit|
       @pool.schedule unit
     end
@@ -43,7 +41,7 @@ class XPoolTest < Test::Unit::TestCase
 
   def test_parallelism
     5.times do
-      @pool.schedule SleepUnit.new
+      @pool.schedule Sleeper.new
     end
     assert_nothing_raised Timeout::Error do
       Timeout.timeout 2 do
