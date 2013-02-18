@@ -41,7 +41,7 @@ class XPoolTest < Test::Unit::TestCase
 
   def test_parallelism
     5.times do
-      @pool.schedule Sleeper.new
+      @pool.schedule Sleeper.new(1)
     end
     assert_nothing_raised Timeout::Error do
       Timeout.timeout 2 do
