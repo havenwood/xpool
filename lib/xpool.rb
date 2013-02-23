@@ -3,7 +3,6 @@ class XPool
   require 'timeout'
   require 'logger'
   require 'rbconfig'
-  require 'json'
   require_relative "xpool/version"
   require_relative "xpool/process"
 
