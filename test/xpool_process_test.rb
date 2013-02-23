@@ -16,6 +16,12 @@ class XPoolProcessTest < Test::Unit::TestCase
     refute @process.busy?, 'Expected process to not be busy'
   end
 
+  def test_busy_on_exception
+    @process.schedule Raiser.new
+    sleep 0.1
+    refute @process.busy?
+  end
+
   def test_busy_method_on_dead_process
     @process.schedule Sleeper.new(1)
     @process.shutdown!
