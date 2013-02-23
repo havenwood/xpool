@@ -1,22 +1,22 @@
 == HEAD
 	- add XPool::Process#frequency
-		Returns the number of times a process has been asked to schedule work.
+	Returns the number of times a process has been asked to schedule work.
 		
 	- XPool#schedule schedules work on the least busy subprocess
-		The process picked to run a unit of work is the one who is least busy. 
-		"least busy" means it has been asked to execute the least amount of 
-		work.
+	The process picked to run a unit of work is the one who is least busy. 
+	"least busy" means it has been asked to schedule the least amount of 
+	work.
 
 	- XPool#schedule returns a XPool::Process object.
-		The process that has been picked to run your unit of work is returned 
-		by schedule in case you want to interact with the process later on.
+	The process that has been picked to run your unit of work is returned 
+	by schedule in case you want to interact with the process later on.
 
 	- Add XPool#broadcast
-		The broadcast method can distribute one unit of work across all 
-		subprocesses in the pool.
+	The broadcast method can distribute one unit of work across all 
+	subprocesses in the pool.
 
 	- Add XPool::Process#busy?
-		It tells you whether or not a process is executing work.
+	Returns true when the process is executing a unit of work.	
 
 == v0.3.0
 	* Add XPool#size.
