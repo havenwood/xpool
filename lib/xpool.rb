@@ -123,19 +123,9 @@ class XPool
   #   Returns an instance of XPool::Process.
   #
   def schedule(unit,*args)
-    process = @pool.find { |process| !process.busy? }
-    if process
-      process.schedule unit, *args
-    else
-      #
-      # FIXME:
-      # Picking a random process means we could swamp one process instead of
-      # distributing the work evenly.
-      #
-      random_process = @pool.sample
-      random_process.schedule unit, *args
-    end
-    process || random_process
+    process = @pool.sort_by(&:scheduled_work).first
+    process.schedule unit, *args
+    process
   end
 
   #

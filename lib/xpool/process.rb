@@ -8,6 +8,7 @@ class XPool::Process
     @busy_channel = IChannel.new Marshal
     @id = spawn
     @busy = false
+    @scheduled_work = 0
   end
 
   #
@@ -32,7 +33,27 @@ class XPool::Process
     _shutdown 'SIGKILL' unless dead?
   end
 
+  #
+  # @return [Fixnum]
+  #   The number of unit works the process has been asked to process.
+  #
+  # @api private
+  #
+  def scheduled_work
+    @scheduled_work
+  end
+
+  #
+  # @param [#run] unit
+  #   The unit of work
+  #
+  # @param [Object] *args
+  #   A variable number of arguments to be passed to #run
+  #
+  # @return [void]
+  #
   def schedule(unit,*args)
+    @scheduled_work += 1
     @channel.put unit: unit, args: args
   end
 

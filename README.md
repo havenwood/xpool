@@ -14,9 +14,8 @@ XPool is a lightweight UNIX(X) Process Pool. The pool is dynamic in the sense
 that you can resize the pool at runtime. The pool can be used to schedule 
 'units of work' that are defined as any object that implements the 'run' 
 method. A 'unit of work' is run by a dedicated subprocess in the pool but if 
-the pool is dry(i.e: all subprocesses are busy executing work) there is a 
-simple queue that ensures the next free subprocess picks up work that is left
-on the queue.
+the pool is dry(i.e: all subprocesses are busy executing work) the least busy
+subprocess has the work put on its queue (each process has its own queue).
 
 There are also all the other features you might expect, such as an interface to 
 shutdown gracefully or to shutdown immediately. Graceful shutdowns can operate 
