@@ -111,9 +111,9 @@ private
             @busy_channel.put true
             msg = @channel.get
             msg[:unit].run *msg[:args]
-            @busy_channel.put false
           end
         ensure
+          @busy_channel.put false
           if @shutdown_requested && !@channel.readable?
             XPool.log "#{::Process.pid} is about to exit."
             break
