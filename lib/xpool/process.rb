@@ -37,8 +37,6 @@ class XPool::Process
   # @return [Fixnum]
   #   The number of times the process has been asked to schedule work.
   #
-  # @api private
-  #
   def frequency
     @frequency
   end
