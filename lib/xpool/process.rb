@@ -90,13 +90,9 @@ class XPool::Process
 
 private
   def _shutdown(sig)
-    begin
-      Process.kill sig, @id
-    rescue SystemCallError
-    ensure
-      Process.wait @id
-      @dead = true
-    end
+    Process.kill sig, @id
+    Process.wait @id
+    @dead = true
   end
 
   def spawn
