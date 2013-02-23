@@ -89,6 +89,16 @@ class XPool::Process
   end
 
 private
+  def _shutdown(sig)
+    begin
+      Process.kill sig, @id
+      Process.wait @id
+    rescue SystemCallError
+    ensure
+      @dead = true
+    end
+  end
+
   def spawn
     fork do
       trap :SIGUSR1 do
@@ -110,16 +120,6 @@ private
           end
         end
       end
-    end
-  end
-
-  def _shutdown(sig)
-    begin
-      Process.kill sig, @id
-      Process.wait @id
-    rescue SystemCallError
-    ensure
-      @dead = true
     end
   end
 end
