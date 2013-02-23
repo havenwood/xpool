@@ -35,7 +35,7 @@ class XPool::Process
 
   #
   # @return [Fixnum]
-  #   The number of unit works the process has been asked to process.
+  #   The number of unit works the process has been asked to execute.
   #
   # @api private
   #
