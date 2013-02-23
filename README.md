@@ -109,8 +109,9 @@ __SIGUSR1__
 
 All XPool managed subprocesses define a signal handler for the SIGUSR1 signal.
 A unit of work should never define a signal handler for SIGUSR1 because that 
-would overwrite the handler defined by XPool. SIGUSR2 might be a good second 
-option because it is not used by XPool at all.
+would overwrite the handler defined by XPool. SIGUSR2 is not caught by XPool
+and it could be a good second option.
+
 
 __INSTALL__
 
