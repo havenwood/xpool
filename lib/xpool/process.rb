@@ -92,9 +92,9 @@ private
   def _shutdown(sig)
     begin
       Process.kill sig, @id
-      Process.wait @id
     rescue SystemCallError
     ensure
+      Process.wait @id
       @dead = true
     end
   end
