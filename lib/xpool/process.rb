@@ -1,7 +1,7 @@
 class XPool::Process
   #
-  # @param [Fixnum] id
-  #   The Process ID.
+  # @return [XPool::Process]
+  #   Returns an instance of XPool::Process
   #
   def initialize
     @channel= IChannel.new Marshal
