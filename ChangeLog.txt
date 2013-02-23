@@ -1,4 +1,9 @@
 == HEAD
+	- XPool#schedule schedules work on the least busy subprocess
+		The process picked to run a unit of work is the one who is least busy. 
+		"least busy" means it has been asked to execute the least amount of 
+		work.
+
 	- XPool#schedule returns a XPool::Process object.
 		The process that has been picked to run your unit of work is returned 
 		by schedule in case you want to interact with the process later on.
