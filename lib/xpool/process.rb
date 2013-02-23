@@ -4,11 +4,11 @@ class XPool::Process
   #   The Process ID.
   #
   def initialize
-    @channel = IChannel.new Marshal
+    @channel= IChannel.new Marshal
     @busy_channel = IChannel.new Marshal
     @id = spawn
     @busy = false
-    @scheduled_work = 0
+    @frequency = 0
   end
 
   #
@@ -35,12 +35,12 @@ class XPool::Process
 
   #
   # @return [Fixnum]
-  #   The number of unit works the process has been asked to execute.
+  #   The number of times the process has been asked to schedule work.
   #
   # @api private
   #
-  def scheduled_work
-    @scheduled_work
+  def frequency
+    @frequency
   end
 
   #
@@ -53,7 +53,7 @@ class XPool::Process
   # @return [void]
   #
   def schedule(unit,*args)
-    @scheduled_work += 1
+    @frequency += 1
     @channel.put unit: unit, args: args
   end
 

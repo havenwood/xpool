@@ -3,6 +3,7 @@ class XPool
   require 'timeout'
   require 'logger'
   require 'rbconfig'
+  require 'json'
   require_relative "xpool/version"
   require_relative "xpool/process"
 
@@ -123,7 +124,7 @@ class XPool
   #   Returns an instance of XPool::Process.
   #
   def schedule(unit,*args)
-    process = @pool.sort_by(&:scheduled_work).first
+    process = @pool.sort_by(&:frequency).first
     process.schedule unit, *args
     process
   end
