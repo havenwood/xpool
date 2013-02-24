@@ -48,7 +48,8 @@ class XPool::Process
   # @param [Object] *args
   #   A variable number of arguments to be passed to #run
   #
-  # @return [void]
+  # @return [XPool::Process]
+  #   Returns self.
   #
   def schedule(unit,*args)
     if dead?
