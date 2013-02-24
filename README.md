@@ -10,16 +10,9 @@ __OVERVIEW__
 
 __DESCRIPTION__
 
-XPool is a lightweight process pool that can schedule one or more 'units of work'
-that are defined as any object that implements the `run` method. The pool can be 
-any size you decide but XPool will try to create a pool with a subprocess for 
-each CPU core if you do not specify a pool size.
-
-The pool can be resized at runtime if you decide you need to scale down or 
-scale up. The pool can also be shutdown gracefully or shutdown with
-force(through SIGKILL). A graceful shutdown can operate within a timeout that
-forces a hard shutdown through SIGKILL if X seconds pass by and all subprocesses
-have not exited.
+XPool is a lightweight process pool. The pool manages a group of subprocesses
+that it uses when the pool is asked to dispatch a 'unit of work'. A 
+'unit of work' is defined as any object that implements the `run` method.
 
 All subprocesses in the pool have their own message queue that the pool places
 work onto according to a very simple algorithm: the subprocess who has scheduled
@@ -71,7 +64,7 @@ pool.shutdown
 _3._
 
 
-A demo of how you can talk to the subprocess that has been scheduled to run 
+A demo of how you'd talk to the subprocess that has been picked to run 
 your unit of work:
 
 ```ruby
