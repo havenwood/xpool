@@ -57,6 +57,7 @@ class XPool::Process
     end
     @frequency += 1
     @channel.put unit: unit, args: args
+    self
   end
 
   #
