@@ -90,7 +90,7 @@ __4.__
 A demo of how you'd resize the pool from 5 to 2 subprocesses at runtime:
 
 ```ruby
-pool = XPool.new 10
+pool = XPool.new 5
 pool.resize! 1..2
 pool.shutdown
 ```
