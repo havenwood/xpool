@@ -11,7 +11,7 @@ __OVERVIEW__
 __DESCRIPTION__
 
 XPool is a lightweight process pool. The pool manages a group of subprocesses
-that it uses when the pool is asked to dispatch a 'unit of work'. A 
+that are used when the pool is asked to dispatch a 'unit of work'. A 
 'unit of work' is defined as any object that implements the `run` method.
 
 All subprocesses in the pool have their own message queue that the pool places
@@ -19,15 +19,14 @@ work onto according to a very simple algorithm: the subprocess who has scheduled
 the least amount of work is the subprocess who will have the next unit of work 
 put onto its message queue. The message queue that each subprocess has is also 
 what ensures work can be queued when the pool becomes dry (all subprocesses are
-busy).
-
+busy). 
 
 
 __EXAMPLES__
 
 _1._
 
-A demo of how you would schedule a unit of work: 
+A demo of how to schedule a unit of work: 
 
 ```ruby
 #
@@ -47,8 +46,8 @@ pool.shutdown
 
 _2._
 
-A demo of how you'd distribute a single unit of work to be run across all 
-subprocesses in the pool:
+A demo of how to run a single unit of work across all subprocesses in the
+pool:
 
 ```ruby
 class Unit
@@ -63,9 +62,9 @@ pool.shutdown
 
 _3._
 
-
-A demo of how you'd talk to the subprocess that has been picked to run 
-your unit of work:
+A demo of how you can interact with subprocesses through 
+[XPool::Process](http://rdoc.info/github/robgleeson/xpool/master/XPool/Process)
+objects:
 
 ```ruby
 class Unit
@@ -80,7 +79,7 @@ p subprocess.busy? # => true
 
 __4.__
 
-A demo of how you'd resize the pool from 5 to 2 subprocesses at runtime:
+A demo of how to resize the pool from 5 to 2 subprocesses at runtime:
 
 ```ruby
 pool = XPool.new 5
@@ -90,7 +89,7 @@ pool.shutdown
 
 __5.__
 
-A demo of how you'd gracefully shutdown but force a hard shutdown if 3 seconds
+A demo of how to gracefully shutdown but force a hard shutdown when 3 seconds
 pass by & all subprocesses have not exited:
 
 ```ruby
