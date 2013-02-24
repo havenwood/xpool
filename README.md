@@ -24,6 +24,10 @@ busy).
 
 __EXAMPLES__
 
+The examples don't demonstrate everything that XPool can do. The 
+[API docs](http://rubydoc.info/github/robgleeson/xpool/XPool) 
+cover the missing pieces.
+
 _1._
 
 A demo of how to schedule a unit of work: 
