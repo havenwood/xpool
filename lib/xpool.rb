@@ -134,7 +134,7 @@ class XPool
       raise RuntimeError,
         "cannot schedule work with no subprocesses running"
     end
-    process = @pool.sort_by(&:frequency).first
+    process = @pool.reject(&:dead?).sort_by(&:frequency).first
     process.schedule unit, *args
     process
   end
