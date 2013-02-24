@@ -5,7 +5,7 @@ class XPoolProcessTest < Test::Unit::TestCase
   end
 
   def teardown
-    @process.shutdown
+    @process.shutdown!
   end
 
   def test_busy_method
@@ -26,5 +26,20 @@ class XPoolProcessTest < Test::Unit::TestCase
     @process.schedule Sleeper.new(1)
     @process.shutdown!
     refute @process.busy?
+  end
+
+  def test_frequency
+    4.times { @process.schedule Sleeper.new(0.1) }
+    assert_equal 4, @process.frequency
+  end
+
+  def test_queue
+    unit1 = IOWriter.new
+    unit2 = IOWriter.new
+    @process.schedule unit1
+    @process.schedule unit2
+    @process.shutdown
+    assert unit1.run?
+    assert unit2.run?
   end
 end
