@@ -9,10 +9,8 @@ class XPoolTest < Test::Unit::TestCase
   end
 
   def test_broadcast
-    @pool.broadcast Sleeper.new(1)
-    @pool.instance_variable_get(:@pool).each do |process|
-      assert process.busy?, 'Expected process to be busy'
-    end
+    subprocesses = @pool.broadcast Sleeper.new(1)
+    subprocesses.each { |subprocess| assert_equal 1, subprocess.frequency }
   end
 
   def test_size_with_graceful_shutdown
@@ -30,7 +28,6 @@ class XPoolTest < Test::Unit::TestCase
   def test_queue
     @pool.resize! 1..1
     subprocesses = Array.new(5) { @pool.schedule Sleeper.new(0.1) }.uniq!
-    @pool.shutdown
     assert_equal 1, subprocesses.size
     assert_equal 5, subprocesses[0].frequency
   end
