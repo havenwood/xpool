@@ -5,7 +5,7 @@ class XPoolTest < Test::Unit::TestCase
   end
 
   def teardown
-    @pool.shutdown
+    @pool.shutdown!
   end
 
   def test_broadcast
@@ -29,25 +29,15 @@ class XPoolTest < Test::Unit::TestCase
 
   def test_queue
     @pool.resize! 1..1
-    units = Array.new(5) { IOWriter.new }
-    units.each do |unit|
-      @pool.schedule unit
-    end
+    subprocesses = Array.new(5) { @pool.schedule IOWriter.new }.uniq!
     @pool.shutdown
-    units.each do |unit|
-      assert unit.run?
-    end
+    assert_equal 1, subprocesses.size
+    assert_equal 5, subprocesses[0].frequency
   end
 
-  def test_parallelism
-    5.times do
-      @pool.schedule Sleeper.new(1)
-    end
-    assert_nothing_raised Timeout::Error do
-      Timeout.timeout 2 do
-        @pool.shutdown
-      end
-    end
+  def test_distribution_of_work
+    subprocesses = (0..4).map { @pool.schedule Sleeper.new(0.1) }
+    subprocesses.each { |subprocess| assert_equal 1, subprocess.frequency }
   end
 
   def test_resize!
