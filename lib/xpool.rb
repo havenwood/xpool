@@ -143,6 +143,14 @@ class XPool
   end
 
   #
+  # @return [Boolean]
+  #   Returns true when all subprocesses in the pool are busy.
+  #
+  def dry?
+    @pool.all?(&:busy?)
+  end
+
+  #
   # Count the number of CPU cores available.
   #
   def number_of_cpu_cores

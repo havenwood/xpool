@@ -1,4 +1,7 @@
 == HEAD
+	- add XPool#dry?
+	Returns true when all subprocesses in the pool are busy.
+
 	- XPool::Process#schedule raises when the process is dead
 	Incase the process has been shutdown a call to XPool::Process#schedule will
 	raise a RuntimeError.

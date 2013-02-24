@@ -41,4 +41,9 @@ class XPoolTest < Test::Unit::TestCase
     @pool.resize! 1..1
     assert_equal 1, @pool.instance_variable_get(:@pool).size
   end
+
+  def test_dry?
+    5.times { @pool.schedule Sleeper.new(1) }
+    assert @pool.dry?
+  end
 end
