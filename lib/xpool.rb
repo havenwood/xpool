@@ -47,10 +47,10 @@ class XPool
   #   pool = XPool.new 5
   #   pool.broadcast unit
   #
-  # @return [void]
+  # @return [Array<XPool::Process>]
   #
   def broadcast(unit, *args)
-    @pool.each do |process|
+    @pool.map do |process|
       process.schedule unit, *args
     end
   end
