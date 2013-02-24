@@ -48,6 +48,9 @@ class XPool::Process
   # @param [Object] *args
   #   A variable number of arguments to be passed to #run
   #
+  # @raise [RuntimeError]
+  #   When the subprocess is dead.
+  #
   # @return [XPool::Process]
   #   Returns self
   #

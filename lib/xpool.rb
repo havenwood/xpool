@@ -48,9 +48,10 @@ class XPool
   #   pool.broadcast unit
   #
   # @return [Array<XPool::Process>]
+  #   Returns an array of XPool::Process objects
   #
   def broadcast(unit, *args)
-    @pool.map do |process|
+    @pool.reject(&:dead?).map do |process|
       process.schedule unit, *args
     end
   end
@@ -118,6 +119,9 @@ class XPool
   #
   # @param
   #   (see Process#schedule)
+  #
+  # @raise [RuntimeError]
+  #   When the pool is dead (no subprocesses are left running)
   #
   # @return [XPool::Process]
   #   Returns an instance of XPool::Process.
