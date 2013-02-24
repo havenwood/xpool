@@ -49,7 +49,7 @@ class XPool::Process
   #   A variable number of arguments to be passed to #run
   #
   # @return [XPool::Process]
-  #   Returns self.
+  #   Returns self
   #
   def schedule(unit,*args)
     if dead?
