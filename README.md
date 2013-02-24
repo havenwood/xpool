@@ -16,9 +16,9 @@ that are used when the pool is asked to dispatch a 'unit of work'. A
 
 All subprocesses in the pool have their own message queue that the pool places
 work onto according to a very simple algorithm: the subprocess who has scheduled
-the least amount of work is the subprocess who will have the next unit of work 
+the least amount of work is the subprocess who will have the unit of work 
 put onto its message queue. The message queue that each subprocess has is also 
-what ensures work can be queued when the pool becomes dry (all subprocesses are
+what ensures work can be queued when the pool becomes dry (all subprocesses are 
 busy). 
 
 
