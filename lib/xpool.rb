@@ -6,9 +6,6 @@ class XPool
   require_relative "xpool/version"
   require_relative "xpool/process"
 
-  class DeadPoolError < RuntimeError
-  end
-
   def self.debug
     if block_given?
       begin
