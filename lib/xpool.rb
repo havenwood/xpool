@@ -125,7 +125,7 @@ class XPool
   def schedule(unit,*args)
     if size == 0 # dead pool
       raise RuntimeError,
-        "cannot schedule work with no active subprocesses"
+        "cannot schedule work with no subprocesses running"
     end
     process = @pool.sort_by(&:frequency).first
     process.schedule unit, *args
