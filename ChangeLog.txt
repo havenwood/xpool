@@ -1,4 +1,12 @@
 == HEAD
+	- XPool::Process#schedule raises when the process is dead
+	Incase the process has been shutdown a call to XPool::Process#schedule will
+	raise a RuntimeError.
+
+	- XPool#schedule raises when the pool has no active subprocesses
+	Incase the pool has been shutdown a call to XPool#schedule will raise a 
+	RuntimeError.
+
 	- add XPool::Process#frequency
 	Returns the number of times a process has been asked to schedule work.
 		

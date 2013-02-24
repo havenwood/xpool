@@ -123,6 +123,10 @@ class XPool
   #   Returns an instance of XPool::Process.
   #
   def schedule(unit,*args)
+    if size == 0 # dead pool
+      raise RuntimeError,
+        "cannot schedule work with no active subprocesses"
+    end
     process = @pool.sort_by(&:frequency).first
     process.schedule unit, *args
     process

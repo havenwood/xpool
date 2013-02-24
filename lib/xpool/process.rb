@@ -51,6 +51,10 @@ class XPool::Process
   # @return [void]
   #
   def schedule(unit,*args)
+    if dead?
+      raise RuntimeError,
+        "cannot schedule work on a dead process (with ID: #{@id})"
+    end
     @frequency += 1
     @channel.put unit: unit, args: args
   end
