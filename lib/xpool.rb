@@ -6,6 +6,9 @@ class XPool
   require_relative "xpool/version"
   require_relative "xpool/process"
 
+  class DeadPoolError < RuntimeError
+  end
+
   def self.debug
     if block_given?
       begin
@@ -136,7 +139,6 @@ class XPool
     end
     process = @pool.reject(&:dead?).sort_by(&:frequency).first
     process.schedule unit, *args
-    process
   end
 
   #
