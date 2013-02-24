@@ -10,22 +10,31 @@ __OVERVIEW__
 
 __DESCRIPTION__
 
-XPool is a lightweight UNIX(X) Process Pool. The pool is dynamic in the sense
-that you can resize the pool at runtime. The pool can be used to schedule 
-'units of work' that are defined as any object that implements the 'run' 
-method. A 'unit of work' is run by a dedicated subprocess in the pool and 
-each subprocess has its own message queue incase the pool becomes dry.
+XPool is a lightweight process pool that can schedule one or more 'units of work'
+that are defined as any object that implements the `run` method. The pool can be 
+any size you decide but XPool will try to create a pool with a subprocess for 
+each CPU core if you do not specify a pool size.
 
-There are also all the other features you might expect, such as an interface to 
-shutdown gracefully or to shutdown immediately. Graceful shutdowns can operate 
-within a timeout that when passed shuts down the pool immediately. 
+The pool can be resized at runtime if you decide you need to scale down or 
+scale up. The pool can also be shutdown gracefully or shutdown with
+force(through SIGKILL). A graceful shutdown can operate within a timeout that
+forces a hard shutdown through SIGKILL if X seconds pass by and all subprocesses
+have not exited.
+
+All subprocesses in the pool have their own message queue that the pool places
+work onto according to a very simple algorithm: the subprocess who has scheduled
+the least amount of work is the subprocess who will have the next unit of work 
+put onto its message queue. The message queue that each subprocess has is also 
+what ensures work can be queued when the pool becomes dry (all subprocesses are
+busy).
+
 
 
 __EXAMPLES__
 
 _1._
 
-A demo of how you'd create a pool of 5 subprocesses:
+A demo of how you would schedule a unit of work: 
 
 ```ruby
 #
@@ -38,37 +47,12 @@ class Unit
     sleep 1
   end
 end
-pool = XPool.new 5
-5.times { pool.schedule Unit.new }
+pool = XPool.new 3
+pool.schedule Unit.new
 pool.shutdown
 ```
 
 _2._
-
-A demo of how you'd resize the pool from 10 to 5 subprocesses at runtime:
-
-```ruby
-pool = XPool.new 10
-pool.resize! 1..5
-pool.shutdown
-```
-_3._
-
-A demo of how you'd gracefully shutdown but force a hard shutdown if 3 seconds
-pass by & all subprocesses have not exited:
-
-```ruby
-class Unit
-  def run
-    sleep 5
-  end
-end
-pool = XPool.new 5
-pool.schedule Unit.new
-pool.shutdown 3
-```
-
-_4._
 
 A demo of how you'd distribute a single unit of work to be run across all 
 subprocesses in the pool:
@@ -82,6 +66,49 @@ end
 pool = XPool.new 5
 pool.broadcast Unit.new
 pool.shutdown
+```
+
+_3._
+
+
+A demo of how you can talk to the subprocess that has been scheduled to run 
+your unit of work:
+
+```ruby
+class Unit
+  def run
+    sleep 1
+  end
+end
+pool = XPool.new 2
+subprocess = pool.schedule Unit.new 
+p subprocess.busy? # => true
+```
+
+__4.__
+
+A demo of how you'd resize the pool from 5 to 2 subprocesses at runtime:
+
+```ruby
+pool = XPool.new 10
+pool.resize! 1..2
+pool.shutdown
+```
+
+__5.__
+
+A demo of how you'd gracefully shutdown but force a hard shutdown if 3 seconds
+pass by & all subprocesses have not exited:
+
+```ruby
+class Unit
+  def run
+    sleep 5
+  end
+end
+pool = XPool.new 5
+pool.schedule Unit.new
+pool.shutdown 3
 ```
 
 __DEBUGGING OUTPUT__
