@@ -124,7 +124,7 @@ private
     @busy_channel.put false
     if @shutdown_requested && !@channel.readable?
       XPool.log "#{::Process.pid} is about to exit."
-      exit
+      exit 0
     end
   end
 end
