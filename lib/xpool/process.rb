@@ -110,21 +110,21 @@ private
         XPool.log "#{::Process.pid} got request to shutdown."
         @shutdown_requested = true
       end
-      loop do
-        begin
-          if @channel.readable?
-            @busy_channel.put true
-            msg = @channel.get
-            msg[:unit].run *msg[:args]
-          end
-        ensure
-          @busy_channel.put false
-          if @shutdown_requested && !@channel.readable?
-            XPool.log "#{::Process.pid} is about to exit."
-            break
-          end
-        end
-      end
+      loop &method(:read_loop)
+    end
+  end
+
+  def read_loop
+    if @channel.readable?
+      @busy_channel.put true
+      msg = @channel.get
+      msg[:unit].run *msg[:args]
+    end
+  ensure
+    @busy_channel.put false
+    if @shutdown_requested && !@channel.readable?
+      XPool.log "#{::Process.pid} is about to exit."
+      exit
     end
   end
 end
