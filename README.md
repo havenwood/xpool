@@ -48,22 +48,6 @@ pool.shutdown
 
 _2._
 
-A demo of how to run a single unit of work across all subprocesses in the
-pool:
-
-```ruby
-class Unit
-  def run
-    puts Process.pid
-  end
-end
-pool = XPool.new 5
-pool.broadcast Unit.new
-pool.shutdown
-```
-
-_3._
-
 A demo of how you can interact with subprocesses through 
 [XPool::Process](http://rdoc.info/github/robgleeson/xpool/master/XPool/Process)
 objects:
@@ -77,6 +61,22 @@ end
 pool = XPool.new 2
 subprocess = pool.schedule Unit.new 
 p subprocess.busy? # => true
+```
+
+_3._
+
+A demo of how to run a single unit of work across all subprocesses in the
+pool:
+
+```ruby
+class Unit
+  def run
+    puts Process.pid
+  end
+end
+pool = XPool.new 5
+pool.broadcast Unit.new
+pool.shutdown
 ```
 
 __4.__
