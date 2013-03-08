@@ -1,6 +1,6 @@
 __OVERVIEW__
 
-| Project         | XPool
+| Project         | xpool
 |:----------------|:--------------------------------------------------
 | Homepage        | https://github.com/robgleeson/xpool
 | Documentation   | http://rubydoc.info/github/robgleeson/xpool/frames 
@@ -10,17 +10,15 @@ __OVERVIEW__
 
 __DESCRIPTION__
 
-XPool is a lightweight process pool. The pool manages a group of subprocesses
+xpool is a lightweight process pool. The pool manages a group of subprocesses
 that are used when the pool is asked to dispatch a 'unit of work'. A 
 'unit of work' is defined as any object that implements the `run` method.
 
 All subprocesses in the pool have their own message queue that the pool places
 work onto according to a very simple algorithm: the subprocess who has scheduled
-the least amount of work is the subprocess who will have the unit of work 
-put onto its message queue. The message queue that each subprocess has is also 
-what ensures work can be queued when the pool becomes dry (all subprocesses are 
-busy). 
-
+the least amount of work is asked to put the unit of work on its queue. The 
+message queue that each subprocess has is also  what ensures work can be queued 
+when the pool becomes dry (all subprocesses are busy). 
 
 __EXAMPLES__
 
