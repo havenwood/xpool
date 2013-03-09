@@ -5,7 +5,7 @@ class XPool::Process
   #
   def initialize
     @channel= IChannel.new Marshal
-    @busy_channel = IChannel.new Marshal
+    @status_channel = IChannel.new Marshal
     @id = spawn
     @busy = false
     @frequency = 0
@@ -71,14 +71,23 @@ class XPool::Process
   def busy?
     if dead?
       false
-    elsif @busy_channel.readable?
-      begin
-        @busy = @busy_channel.get
-      end while @busy_channel.readable?
+    elsif @status_channel.readable?
+      set_busy_and_failed
       @busy
     else
       @busy
     end
+  end
+
+  def failed_process
+    if @status_channel.readable?
+      set_busy_and_failed
+    end
+    @failed_process
+  end
+
+  def failed?
+    @failed
   end
 
   #
@@ -116,15 +125,29 @@ private
 
   def read_loop
     if @channel.readable?
-      @busy_channel.put true
+      @status_channel.put busy: true, failed: false
       msg = @channel.get
       msg[:unit].run *msg[:args]
+      @status_channel.put busy: true, failed: false
     end
+  rescue Exception => e
+    @status_channel.put busy: false, failed: true, backtrace: e.backtrace
   ensure
-    @busy_channel.put false
     if @shutdown_requested && !@channel.readable?
       XPool.log "#{::Process.pid} is about to exit."
       exit 0
     end
+  end
+
+  def set_busy_and_failed
+    begin
+      msg = @status_channel.get
+      @busy, @failed, backtrace = msg.values_at :busy, :failed, :backtrace
+      if @failed
+        @failed_process = FailedProcess.new self, backtrace
+      else
+        @failed_process = nil
+      end
+    end while @status_channel.readable?
   end
 end
