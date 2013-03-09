@@ -75,13 +75,6 @@ class XPool::Process
     end
   end
 
-  def failed_process
-    if @status_channel.readable?
-      set_busy_and_failed
-    end
-    @failed_process
-  end
-
   def failed?
     @failed
   end
@@ -156,13 +149,8 @@ private
 
   def set_busy_and_failed
     begin
-      msg = @status_channel.get
-      @busy, @failed, backtrace = msg.values_at :busy, :failed, :backtrace
-      if @failed
-        @failed_process = FailedProcess.new self, backtrace
-      else
-        @failed_process = nil
-      end
+      message = @status_channel.get
+      @busy, @failed, @backtrace = message.values_at :busy, :failed, :backtrace
     end while @status_channel.readable?
   end
 end
