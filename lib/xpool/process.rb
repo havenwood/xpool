@@ -145,6 +145,7 @@ private
       yield
     end
   rescue Exception => e
+    XPool.log "#{::Process.pid} has failed."
     @status_channel.put failed: true, dead: true, backtrace: e.backtrace
   ensure
     if @shutdown_requested && !@channel.readable?
