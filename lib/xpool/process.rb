@@ -4,11 +4,7 @@ class XPool::Process
   #   Returns an instance of XPool::Process
   #
   def initialize
-    @channel= IChannel.new Marshal
-    @status_channel = IChannel.new Marshal
     @id = spawn
-    @busy = false
-    @frequency = 0
   end
 
   #
@@ -106,6 +102,15 @@ class XPool::Process
     @dead
   end
 
+  #
+  # @return [Fixnum]
+  #   Returns the process ID of the new process.
+  #
+  def restart
+    shutdown
+    @id = spawn
+  end
+
 private
   def _shutdown(sig)
     Process.kill sig, @id
@@ -114,6 +119,10 @@ private
   end
 
   def spawn
+    @channel = IChannel.new Marshal
+    @status_channel = IChannel.new Marshal
+    @busy = false
+    @frequency = 0
     fork do
       trap :SIGUSR1 do
         XPool.log "#{::Process.pid} got request to shutdown."
