@@ -132,11 +132,17 @@ private
   end
 
   def read_loop
-    if @channel.readable?
+    try do
       @status_channel.put busy: true
       msg = @channel.get
       msg[:unit].run *msg[:args]
       @status_channel.put busy: false
+    end
+  end
+
+  def try
+    if @channel.readable?
+      yield
     end
   rescue Exception => e
     @status_channel.put failed: true, dead: true, backtrace: e.backtrace
