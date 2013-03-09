@@ -137,7 +137,7 @@ private
       @status_channel.put busy: true, failed: false
       msg = @channel.get
       msg[:unit].run *msg[:args]
-      @status_channel.put busy: true, failed: false
+      @status_channel.put busy: false, failed: false
     end
   rescue Exception => e
     @status_channel.put busy: false, failed: true, backtrace: e.backtrace
