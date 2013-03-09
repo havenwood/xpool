@@ -133,13 +133,13 @@ private
 
   def read_loop
     if @channel.readable?
-      @status_channel.put busy: true, failed: false
+      @status_channel.put busy: true
       msg = @channel.get
       msg[:unit].run *msg[:args]
-      @status_channel.put busy: false, failed: false
+      @status_channel.put busy: false
     end
   rescue Exception => e
-    @status_channel.put busy: false, failed: true, backtrace: e.backtrace
+    @status_channel.put failed: true, dead: true, backtrace: e.backtrace
   ensure
     if @shutdown_requested && !@channel.readable?
       XPool.log "#{::Process.pid} is about to exit."
@@ -150,7 +150,10 @@ private
   def set_busy_and_failed
     begin
       message = @status_channel.get
-      @busy, @failed, @backtrace = message.values_at :busy, :failed, :backtrace
+      @busy, @failed, @dead, @backtrace = message.values_at :busy,
+        :failed,
+        :dead,
+        :backtrace
     end while @status_channel.readable?
   end
 end
