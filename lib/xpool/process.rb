@@ -118,11 +118,17 @@ private
     @dead = true
   end
 
-  def spawn
+  def reset
     @channel = IChannel.new Marshal
     @status_channel = IChannel.new Marshal
     @busy = false
+    @dead = false
+    @failed = false
     @frequency = 0
+  end
+
+  def spawn
+    reset
     fork do
       trap :SIGUSR1 do
         XPool.log "#{::Process.pid} got request to shutdown."
