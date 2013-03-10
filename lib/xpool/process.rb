@@ -91,12 +91,10 @@ class XPool::Process
   #   Returns true when the process is no longer running.
   #
   def dead?
-    if @forced_shutdown
-      @states[:dead]
-    else
+    unless @forced_shutdown
       synchronize!
-      @states[:dead]
     end
+    @states[:dead]
   end
 
   #
