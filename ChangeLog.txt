@@ -1,4 +1,8 @@
 == HEAD
+	- add XPool::Process#backtrace
+	Returns the backtrace of the exception that caused a process to fail. Returns 
+	nil whenever the process is not in a failed state.
+
 	- add XPool::Process#failed?
 	Returns true when a unit of work does not handle an exception, which causes
 	the subprocess it is running in to exit. A failed process can be restarted
