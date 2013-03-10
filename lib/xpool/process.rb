@@ -17,7 +17,7 @@ class XPool::Process
   # @return [void]
   #
   def shutdown
-    _shutdown :graceful
+    _shutdown :graceful unless @shutdown
   end
 
   #
@@ -26,7 +26,7 @@ class XPool::Process
   # @return [void]
   #
   def shutdown!
-    _shutdown :force
+    _shutdown :force unless @shutdown
   end
 
   #
