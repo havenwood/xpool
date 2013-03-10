@@ -67,10 +67,8 @@ class XPool::Process
   def busy?
     if dead?
       false
-    elsif @status_channel.readable?
-      synchronize!
-      @busy
     else
+      synchronize!
       @busy
     end
   end
