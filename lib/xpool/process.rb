@@ -126,14 +126,14 @@ private
   end
 
   def synchronize!
-    while @status_channel.readable?
-      @states = @status_channel.get
+    while @schannel.readable?
+      @states = @schannel.get
     end
   end
 
   def reset
     @channel = IChannel.new Marshal
-    @status_channel = IChannel.new Marshal
+    @schannel = IChannel.new Marshal
     @states = {}
     @frequency = 0
   end
@@ -151,14 +151,14 @@ private
 
   def read_loop
     if @channel.readable?
-      @status_channel.put busy: true
+      @schannel.put busy: true
       msg = @channel.get
       msg[:unit].run *msg[:args]
-      @status_channel.put busy: false
+      @schannel.put busy: false
     end
   rescue Exception => e
     XPool.log "#{::Process.pid} has failed."
-    @status_channel.put failed: true, dead: true, backtrace: e.backtrace
+    @schannel.put failed: true, dead: true, backtrace: e.backtrace
     raise e
   ensure
     if @shutdown_requested && !@channel.readable?
