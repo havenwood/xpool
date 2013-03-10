@@ -122,7 +122,7 @@ private
     Process.wait @id
   rescue Errno::ECHILD,Errno::ESRCH
   ensure
-    @dead = true
+    @states[:dead] = true
   end
 
   def synchronize!
