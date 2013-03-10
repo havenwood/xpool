@@ -17,7 +17,7 @@ class XPool::Process
   # @return [void]
   #
   def shutdown
-    _shutdown 'SIGUSR1'
+    _shutdown :graceful
   end
 
   #
@@ -26,7 +26,7 @@ class XPool::Process
   # @return [void]
   #
   def shutdown!
-    _shutdown 'SIGKILL'
+    _shutdown :force
   end
 
   #
@@ -117,13 +117,19 @@ class XPool::Process
   end
 
 private
-  def _shutdown(sig)
+  def _shutdown(action)
+    sig = action == :force ? 'SIGKILL' : 'SIGUSR1'
     Process.kill sig, @id
     Process.wait @id
-  rescue Errno::ECHILD,Errno::ESRCH
+  rescue Errno::ECHILD, Errno::ESRCH
   ensure
-    @shutdown = true
-    @states[:dead] = true
+    if action == :force
+      @shutdown = true
+      @states = {dead: true}
+    else
+      synchronize!
+      @shutdown = true
+    end
     @channel.close
     @s_channel.close
   end
