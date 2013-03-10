@@ -69,13 +69,13 @@ class XPool::Process
       false
     else
       synchronize!
-      @busy
+      @states[:busy]
     end
   end
 
   def failed?
     synchronize!
-    @failed
+    @states[:failed]
   end
 
   #
@@ -92,7 +92,7 @@ class XPool::Process
   #
   def dead?
     synchronize!
-    @dead
+    @states[:dead]
   end
 
   #
@@ -104,7 +104,7 @@ class XPool::Process
   #
   def backtrace
     synchronize!
-    @backtrace
+    @states[:backtrace]
   end
 
   #
@@ -127,20 +127,14 @@ private
 
   def synchronize!
     while @status_channel.readable?
-      message = @status_channel.get
-      @busy, @failed, @dead, @backtrace = message.values_at :busy,
-        :failed,
-        :dead,
-        :backtrace
+      @states = @status_channel.get
     end
   end
 
   def reset
     @channel = IChannel.new Marshal
     @status_channel = IChannel.new Marshal
-    @busy = false
-    @dead = false
-    @failed = false
+    @states = {}
     @frequency = 0
   end
 
