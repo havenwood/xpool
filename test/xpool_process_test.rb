@@ -65,7 +65,7 @@ class XPoolProcessTest < Test::Unit::TestCase
 
   def test_race_condition_in_process_forced_to_shutdown
     @process.schedule IOWriter.new
-    sleep 0.1
+    sleep 0.5
     @process.shutdown!
     assert @process.dead?
   end
