@@ -68,7 +68,7 @@ class XPool::Process
     if dead?
       false
     elsif @status_channel.readable?
-      set_busy_and_failed
+      synchronize!
       @busy
     else
       @busy
@@ -111,6 +111,16 @@ private
     @dead = true
   end
 
+  def synchronize!
+    while @status_channel.readable?
+      message = @status_channel.get
+      @busy, @failed, @dead, @backtrace = message.values_at :busy,
+        :failed,
+        :dead,
+        :backtrace
+    end
+  end
+
   def reset
     @channel = IChannel.new Marshal
     @status_channel = IChannel.new Marshal
@@ -146,15 +156,5 @@ private
       XPool.log "#{::Process.pid} is about to exit."
       exit 0
     end
-  end
-
-  def set_busy_and_failed
-    begin
-      message = @status_channel.get
-      @busy, @failed, @dead, @backtrace = message.values_at :busy,
-        :failed,
-        :dead,
-        :backtrace
-    end while @status_channel.readable?
   end
 end
