@@ -42,4 +42,14 @@ class XPoolProcessTest < Test::Unit::TestCase
     assert unit1.run?
     assert unit2.run?
   end
+
+  def test_failed_on_failed_process
+    @process.schedule Raiser.new
+    assert @process.failed?
+  end
+
+  def test_shutdown_on_failed_process
+    @process.schedule Raiser.new
+    assert_instance_of Fixnum, @process.restart
+  end
 end
