@@ -63,10 +63,9 @@ class XPoolProcessTest < Test::Unit::TestCase
     assert_equal %w(42), @process.backtrace
   end
 
-  def test_race_condition_in_process_dead
-    skip 'FIXME'
+  def test_race_condition_in_process_forced_to_shutdown
     @process.schedule IOWriter.new
-    sleep 1
+    sleep 0.1
     @process.shutdown!
     assert @process.dead?
   end

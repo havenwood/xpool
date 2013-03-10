@@ -91,8 +91,12 @@ class XPool::Process
   #   Returns true when the process is no longer running.
   #
   def dead?
-    synchronize!
-    @states[:dead]
+    if @forced_shutdown
+      @states[:dead]
+    else
+      synchronize!
+      @states[:dead]
+    end
   end
 
   #
@@ -122,6 +126,7 @@ private
     Process.wait @id
   rescue Errno::ECHILD,Errno::ESRCH
   ensure
+    @forced_shutdown = true
     @states[:dead] = true
   end
 
@@ -134,6 +139,7 @@ private
   def reset
     @channel = IChannel.new Marshal
     @s_channel = IChannel.new Marshal
+    @forced_shutdown = false
     @states = {}
     @frequency = 0
   end
