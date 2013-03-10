@@ -83,7 +83,6 @@ class XPool::Process
   #   Returns true when the process is alive.
   #
   def alive?
-    synchronize!
     !dead?
   end
 
