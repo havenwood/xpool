@@ -96,6 +96,18 @@ class XPool::Process
   end
 
   #
+  # If a process has failed (see #failed?) this method returns the backtrace of
+  # the exception that caused the process to fail.
+  #
+  # @return [Array<String>]
+  #   Returns the backtrace.
+  #
+  def backtrace
+    synchronize!
+    @backtrace
+  end
+
+  #
   # @return [Fixnum]
   #   Returns the process ID of the new process.
   #

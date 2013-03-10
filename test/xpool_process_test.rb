@@ -57,4 +57,9 @@ class XPoolProcessTest < Test::Unit::TestCase
     @process.schedule Raiser.new
     assert @process.dead?
   end
+
+  def test_backtrace
+    @process.schedule Raiser.new
+    assert_equal %w(42), @process.backtrace
+  end
 end

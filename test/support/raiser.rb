@@ -1,5 +1,5 @@
 class Raiser
   def run
-    raise RuntimeError, "", []
+    raise RuntimeError, "", %w(42)
   end
 end
