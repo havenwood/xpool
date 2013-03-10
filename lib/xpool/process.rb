@@ -17,7 +17,7 @@ class XPool::Process
   # @return [void]
   #
   def shutdown
-    _shutdown 'SIGUSR1' unless dead?
+    _shutdown 'SIGUSR1'
   end
 
   #
@@ -26,7 +26,7 @@ class XPool::Process
   # @return [void]
   #
   def shutdown!
-    _shutdown 'SIGKILL' unless dead?
+    _shutdown 'SIGKILL'
   end
 
   #
@@ -83,6 +83,7 @@ class XPool::Process
   #   Returns true when the process is alive.
   #
   def alive?
+    synchronize!
     !dead?
   end
 
@@ -91,6 +92,7 @@ class XPool::Process
   #   Returns true when the process is no longer running.
   #
   def dead?
+    synchronize!
     @dead
   end
 
@@ -107,6 +109,8 @@ private
   def _shutdown(sig)
     Process.kill sig, @id
     Process.wait @id
+  rescue Errno::ECHILD,Errno::ESRCH
+  ensure
     @dead = true
   end
 
