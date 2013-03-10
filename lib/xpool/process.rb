@@ -124,6 +124,8 @@ private
   ensure
     @shutdown = true
     @states[:dead] = true
+    @channel.close
+    @s_channel.close
   end
 
   def synchronize!
