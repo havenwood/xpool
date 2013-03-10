@@ -124,21 +124,19 @@ private
   rescue Errno::ECHILD, Errno::ESRCH
   ensure
     if action == :force
-      @shutdown = true
       @states = {dead: true}
     else
       synchronize!
-      @shutdown = true
     end
+    @shutdown = true
     @channel.close
     @s_channel.close
   end
 
   def synchronize!
-    unless @shutdown
-      while @s_channel.readable?
-        @states = @s_channel.get
-      end
+    return if @shutdown
+    while @s_channel.readable?
+      @states = @s_channel.get
     end
   end
 
@@ -174,6 +172,7 @@ private
     raise e
   ensure
     if @shutdown_requested && !@channel.readable?
+      @s_channel.put dead: true
       XPool.log "#{::Process.pid} is about to exit."
       exit 0
     end
