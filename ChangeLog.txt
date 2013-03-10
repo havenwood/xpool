@@ -1,4 +1,12 @@
 == HEAD
+	- add XPool::Process#failed?
+	Returns true when a unit of work does not handle an exception, which causes
+	the subprocess it is running in to exit. A failed process can be restarted
+	through Process#restart.
+
+	- add XPool::Process#restart
+	Restarts a process by gracefully shutting down and respawning a new process.
+
 	- add XPool#dry?
 	Returns true when all subprocesses in the pool are busy.
 
