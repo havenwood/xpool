@@ -165,6 +165,7 @@ private
   rescue Exception => e
     XPool.log "#{::Process.pid} has failed."
     @status_channel.put failed: true, dead: true, backtrace: e.backtrace
+    raise e
   ensure
     if @shutdown_requested && !@channel.readable?
       XPool.log "#{::Process.pid} is about to exit."
