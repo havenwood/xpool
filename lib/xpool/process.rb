@@ -123,11 +123,7 @@ private
     Process.wait @id
   rescue Errno::ECHILD, Errno::ESRCH
   ensure
-    if action == :force
-      @states = {dead: true}
-    else
-      synchronize!
-    end
+    @states = action == :force ? {dead: true} : synchronize!
     @shutdown = true
     @channel.close
     @s_channel.close
@@ -138,6 +134,7 @@ private
     while @s_channel.readable?
       @states = @s_channel.get
     end
+    @states
   end
 
   def reset
