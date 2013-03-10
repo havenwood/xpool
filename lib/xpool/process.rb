@@ -74,6 +74,7 @@ class XPool::Process
   end
 
   def failed?
+    synchronize!
     @failed
   end
 
