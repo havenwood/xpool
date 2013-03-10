@@ -52,4 +52,9 @@ class XPoolProcessTest < Test::Unit::TestCase
     @process.schedule Raiser.new
     assert_instance_of Fixnum, @process.restart
   end
+
+  def test_failed_process_is_also_dead
+    @process.schedule Raiser.new
+    assert @process.dead?
+  end
 end
