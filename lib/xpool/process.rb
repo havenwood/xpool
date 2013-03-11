@@ -65,12 +65,8 @@ class XPool::Process
   #   Returns true when the process is executing work.
   #
   def busy?
-    if dead?
-      false
-    else
-      synchronize!
-      @states[:busy]
-    end
+    synchronize!
+    @states[:busy]
   end
 
   def failed?
