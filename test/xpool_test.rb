@@ -44,7 +44,7 @@ class XPoolTest < Test::Unit::TestCase
 
   def test_dry?
     refute @pool.dry?
-    5.times { @pool.schedule Sleeper.new(1) }
+    5.times { @pool.schedule Sleeper.new(5) }
     assert @pool.dry?
   end
 end
