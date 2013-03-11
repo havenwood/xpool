@@ -47,4 +47,10 @@ class XPoolTest < Test::Unit::TestCase
     5.times { @pool.schedule Sleeper.new(5) }
     assert @pool.dry?
   end
+
+  def test_failed_processes
+    @pool.schedule Raiser.new
+    assert_equal 1, @pool.failed_processes.size
+    assert_equal 4, @pool.size
+  end
 end

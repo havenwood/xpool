@@ -41,6 +41,14 @@ class XPool
   end
 
   #
+  # @return [Array<XPool::Process>]
+  #   Returns an Array of failed processes.
+  #
+  def failed_processes
+    @pool.select(&:failed?)
+  end
+
+  #
   # Broadcasts _unit_ to be run across all subprocesses in the pool.
   #
   # @example
