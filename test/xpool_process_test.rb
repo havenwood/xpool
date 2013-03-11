@@ -48,7 +48,7 @@ class XPoolProcessTest < Test::Unit::TestCase
     assert @process.failed?
   end
 
-  def test_shutdown_on_failed_process
+  def test_restart_on_failed_process
     @process.schedule Raiser.new
     assert_instance_of Fixnum, @process.restart
   end
