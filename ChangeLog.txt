@@ -4,22 +4,22 @@
 	80-100% when a subprocess is idle.
 
 	- add XPool::Process#backtrace
-	Returns the backtrace of the exception that caused a process to fail. Returns 
-	nil whenever the process is not in a failed state.
+	Returns the backtrace of the exception that caused a subprocess to fail. Returns 
+	nil whenever the subprocess is not in a failed state.
 
 	- add XPool::Process#failed?
 	Returns true when a unit of work does not handle an exception, which causes
-	the subprocess it is running in to exit. A failed process can be restarted
+	the subprocess it is running in to exit. A failed subprocess can be restarted
 	through Process#restart.
 
 	- add XPool::Process#restart
-	Restarts a process by gracefully shutting down and respawning a new process.
+	Restarts a subprocess by gracefully shutting down and respawning a new subprocess.
 
 	- add XPool#dry?
 	Returns true when all subprocesses in the pool are busy.
 
-	- XPool::Process#schedule raises when the process is dead
-	Incase the process has been shutdown a call to XPool::Process#schedule will
+	- XPool::Process#schedule raises when the subprocess is dead
+	Incase the subprocess has been shutdown a call to XPool::Process#schedule will
 	raise a RuntimeError.
 
 	- XPool#schedule raises when the pool has no active subprocesses
@@ -27,23 +27,23 @@
 	RuntimeError.
 
 	- add XPool::Process#frequency
-	Returns the number of times a process has been asked to schedule work.
+	Returns the number of times a subprocess has been asked to schedule work.
 		
 	- XPool#schedule schedules work on the least busy subprocess
-	The process picked to run a unit of work is the one who is least busy. 
+	The subprocess picked to run a unit of work is the one who is least busy. 
 	"least busy" means it has been asked to schedule the least amount of 
 	work.
 
 	- XPool#schedule returns a XPool::Process object.
-	The process that has been picked to run your unit of work is returned 
-	by schedule in case you want to interact with the process later on.
+	The subprocess that has been picked to run your unit of work is returned 
+	by schedule in case you want to interact with the subprocess later on.
 
 	- Add XPool#broadcast
 	The broadcast method can distribute one unit of work across all 
 	subprocesses in the pool.
 
 	- Add XPool::Process#busy?
-	Returns true when the process is executing a unit of work.	
+	Returns true when the subprocess is executing a unit of work.	
 
 == v0.3.0
 	* Add XPool#size.
