@@ -158,6 +158,7 @@ private
       msg[:unit].run *msg[:args]
       @s_channel.put busy: false
     end
+    sleep 0.05
   rescue Exception => e
     XPool.log "#{::Process.pid} has failed."
     @s_channel.put failed: true, dead: true, backtrace: e.backtrace
