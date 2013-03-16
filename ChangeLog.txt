@@ -1,4 +1,8 @@
 == HEAD
+	- conserve CPU consumption by sleeping for a short period of time.
+	By sleeping for a short period of time we avoid pegging the CPU at 
+	80-100% when a subprocess is idle.
+
 	- add XPool::Process#backtrace
 	Returns the backtrace of the exception that caused a process to fail. Returns 
 	nil whenever the process is not in a failed state.
