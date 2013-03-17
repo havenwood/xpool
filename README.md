@@ -94,32 +94,6 @@ pool.broadcast Unit.new
 pool.shutdown
 ```
 
-__4.__
-
-A demo of how to resize the pool from 5 to 2 subprocesses at runtime:
-
-```ruby
-pool = XPool.new 5
-pool.resize! 1..2
-pool.shutdown
-```
-
-__5.__
-
-A demo of how to gracefully shutdown but force a hard shutdown when 3 seconds
-pass by & all subprocesses have not exited:
-
-```ruby
-class Unit
-  def run
-    sleep 5
-  end
-end
-pool = XPool.new 5
-pool.schedule Unit.new
-pool.shutdown 3
-```
-
 __DEBUGGING OUTPUT__
 
 XPool can print helpful debugging information if you set `XPool.debug` 
