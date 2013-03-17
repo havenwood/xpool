@@ -77,6 +77,11 @@ class XPool::Process
     !busy?
   end
 
+  #
+  # @return [Boolean]
+  #   Returns true when a subprocess has failed due to an handled
+  #   exception.
+  #
   def failed?
     synchronize!
     @states[:failed]
