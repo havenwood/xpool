@@ -69,6 +69,14 @@ class XPool::Process
     @states[:busy]
   end
 
+  #
+  # @return [Boolean]
+  #   Returns true when the process is not executing a unit of work.
+  #
+  def idle?
+    !busy?
+  end
+
   def failed?
     synchronize!
     @states[:failed]

@@ -1,4 +1,8 @@
 == HEAD
+	- Add XPool::Process#idle?
+	Returns true when the subprocess is considered idle. "idle" means the
+	subprocess is not executing a unit of work.
+
 	- conserve CPU consumption by sleeping for a short period of time.
 	By sleeping for a short period of time we avoid pegging the CPU at 
 	80-100% when a subprocess is idle.
