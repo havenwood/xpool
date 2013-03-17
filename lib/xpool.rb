@@ -138,7 +138,7 @@ class XPool
   #   Returns an instance of XPool::Process.
   #
   def schedule(unit,*args)
-    if size == 0
+    if size == 0 # dead pool
       raise RuntimeError,
         "cannot schedule unit of work on a dead pool"
     end
