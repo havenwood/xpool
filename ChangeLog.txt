@@ -1,5 +1,8 @@
 == HEAD
-	- Add XPool::Process#idle?
+	- upgrade ichannel to ~> 5.1.1
+	See the ichannel ChangeLog.txt for details.
+
+	- add XPool::Process#idle?
 	Returns true when the subprocess is considered idle. "idle" means the
 	subprocess is not executing a unit of work.
 
