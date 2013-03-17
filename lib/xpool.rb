@@ -138,6 +138,10 @@ class XPool
   #   Returns an instance of XPool::Process.
   #
   def schedule(unit,*args)
+    if size == 0
+      raise RuntimeError,
+        "cannot schedule unit of work on a dead pool"
+    end
     process = @pool.reject(&:dead?).min_by { |p| p.frequency }
     process.schedule unit, *args
   end
