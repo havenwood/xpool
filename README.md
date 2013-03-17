@@ -4,7 +4,7 @@ __OVERVIEW__
 |:----------------|:--------------------------------------------------
 | Homepage        | https://github.com/robgleeson/xpool
 | Documentation   | http://rubydoc.info/github/robgleeson/xpool/frames 
-| CI              | [![Build Status](https://travis-ci.org/robgleeson/xpool.png)](https://travis-ci.org/robgleeson/XPool)
+| CI              | [![Build Status](https://travis-ci.org/robgleeson/xpool.png)](https://travis-ci.org/robgleeson/xpool)
 | Author          | Rob Gleeson             
 
 
@@ -37,8 +37,8 @@ scale up or down.
 
 __EXAMPLES__
 
-The examples don't demonstrate everything that XPool can do. The 
-[API docs](http://rubydoc.info/github/robgleeson/xpool/XPool) 
+The examples don't demonstrate everything that xpool can do. The 
+[API docs](http://rubydoc.info/github/robgleeson/xpool) 
 cover the missing pieces.
 
 _1._
@@ -56,7 +56,7 @@ class Unit
     sleep 1
   end
 end
-pool = XPool.new 3
+pool = XPool.new 2
 pool.schedule Unit.new
 pool.shutdown
 ```
@@ -89,14 +89,14 @@ class Unit
     puts Process.pid
   end
 end
-pool = XPool.new 5
+pool = XPool.new 4
 pool.broadcast Unit.new
 pool.shutdown
 ```
 
 __DEBUGGING OUTPUT__
 
-XPool can print helpful debugging information if you set `XPool.debug` 
+xpool can print helpful debugging information if you set `XPool.debug` 
 to true:
 
 ```ruby
@@ -107,7 +107,7 @@ Or you can temporarily enable debugging output for the duration of a block:
 
 ```ruby
 XPool.debug do 
-  pool = XPool.new 5
+  pool = XPool.new 2
   pool.shutdown
 end
 ```
@@ -117,9 +117,9 @@ It can be interesting to look over even if you're not bug hunting.
 
 __SIGUSR1__
 
-All XPool managed subprocesses define a signal handler for the SIGUSR1 signal.
+All xpool managed subprocesses define a signal handler for the SIGUSR1 signal.
 A unit of work should never define a signal handler for SIGUSR1 because that 
-would overwrite the handler defined by XPool. SIGUSR2 is not caught by XPool
+would overwrite the handler defined by xpool. SIGUSR2 is not caught by xpool
 and it could be a good second option.
 
 
