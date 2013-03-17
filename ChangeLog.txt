@@ -2,7 +2,9 @@
 	- upgrade to ichannel v5.1.1
 	Which in turn fixes a performance bug in XPool#schedule. With ichannel v5.0.1 
 	the suite runs in 23~ seconds, but with v5.1.1 we run the suite in 3~ seconds.
-	
+	I don't think the performance hit was that bad in earlier versions, but given
+	the right set of circumstances I'm sure it would be an issue.
+
 	- add XPool::Process#idle?
 	Returns true when the subprocess is considered idle. "idle" means the
 	subprocess is not executing a unit of work.
