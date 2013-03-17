@@ -51,7 +51,7 @@ class XPoolTest < Test::Unit::TestCase
 
   def test_failed_processes
     @pool.schedule Raiser.new
-    sleep 0.05
+    sleep 0.1
     assert_equal 1, @pool.failed_processes.size
     assert_equal 4, @pool.size
   end

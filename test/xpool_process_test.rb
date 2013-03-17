@@ -12,7 +12,7 @@ class XPoolProcessTest < Test::Unit::TestCase
     @process.schedule Sleeper.new(0.5)
     sleep 0.1
     assert @process.busy?, 'Expected process to be busy'
-    sleep 0.405
+    sleep 0.5
     refute @process.busy?, 'Expected process to not be busy'
   end
 
@@ -45,7 +45,7 @@ class XPoolProcessTest < Test::Unit::TestCase
 
   def test_failed_on_failed_process
     @process.schedule Raiser.new
-    sleep 0.05
+    sleep 0.1
     assert @process.failed?
   end
 
@@ -56,13 +56,13 @@ class XPoolProcessTest < Test::Unit::TestCase
 
   def test_failed_process_is_also_dead
     @process.schedule Raiser.new
-    sleep 0.05
+    sleep 0.1
     assert @process.dead?
   end
 
   def test_backtrace
     @process.schedule Raiser.new
-    sleep 0.05
+    sleep 0.1
     assert_equal %w(42), @process.backtrace
   end
 
