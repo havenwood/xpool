@@ -138,7 +138,7 @@ class XPool
   #   Returns an instance of XPool::Process.
   #
   def schedule(unit,*args)
-    process = @pool.reject(&:dead?).sort_by(&:frequency).first
+    process = @pool.reject(&:dead?).min_by { |p| p.frequency }
     process.schedule unit, *args
   end
 
