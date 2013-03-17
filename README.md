@@ -27,6 +27,14 @@ through `XPool` and `XPool::Process` objects. The exception is also re-raised
 so that you can see a process has failed from the output ruby prints when an 
 exception is left unhandled.
 
+__POOL SIZE__
+
+By default xpool will create a pool with X subprocesses, where X is the number 
+of cores on your CPU. This seems like a reasonable default, but if you should 
+decide to choose otherwise you can set the size of the pool when you initialize 
+it. The pool can also be resized at runtime if you decide you need to scale up
+or down.
+
 __EXAMPLES__
 
 The examples don't demonstrate everything that XPool can do. The 
