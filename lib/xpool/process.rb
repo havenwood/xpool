@@ -79,7 +79,7 @@ class XPool::Process
 
   #
   # @return [Boolean]
-  #   Returns true when a subprocess has failed due to an handled
+  #   Returns true when a subprocess has failed due to an unhandled
   #   exception.
   #
   def failed?
