@@ -76,6 +76,7 @@ end
 pool = XPool.new 2
 subprocess = pool.schedule Unit.new 
 p subprocess.busy? # => true
+pool.shutdown
 ```
 
 _3._
