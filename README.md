@@ -17,8 +17,9 @@ that are used when the pool is asked to dispatch a 'unit of work'. A
 All subprocesses in the pool have their own message queue that the pool places
 work onto according to a very simple algorithm: the subprocess who has scheduled
 the least amount of work is the subprocess who is asked to put the work on its
-queue. The message queue that each subprocess has is also  what ensures work 
-can be queued when the pool becomes dry (all subprocesses are busy). 
+queue. This helps ensure an even distribution of work among all subprocesses in 
+the pool. The message queue that each subprocess has is also what ensures 
+work can be queued when the pool becomes dry (all subprocesses are busy). 
 
 Incase a unit of work raises an exception that it does not handle xpool will
 catch the exception and mark the process as 'failed'. A failed process can be
