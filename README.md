@@ -22,7 +22,7 @@ the pool. The message queue that each subprocess has is also what ensures
 work can be queued when the pool becomes dry (all subprocesses are busy). 
 
 Incase a unit of work raises an exception that it does not handle xpool will
-catch the exception and mark the process as 'failed'. A failed process can be
+rescue the exception and mark the process as 'failed'. A failed process can be
 restarted, and it is also possible to access the backtrace of a failed process 
 through `XPool` and `XPool::Process` objects. The exception is also re-raised 
 so that you can see a process has failed from the output ruby prints when an 
