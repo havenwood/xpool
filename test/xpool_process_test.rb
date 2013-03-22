@@ -34,13 +34,10 @@ class XPoolProcessTest < Test::Unit::TestCase
   end
 
   def test_queue
-    unit1 = IOWriter.new
-    unit2 = IOWriter.new
-    @process.schedule unit1
-    @process.schedule unit2
+    writers = Array.new(5) { IOWriter.new }
+    writers.each { |writer| @process.schedule writer }
     @process.shutdown
-    assert unit1.run?
-    assert unit2.run?
+    writers.each { |writer| assert writer.wrote_to_disk? }
   end
 
   def test_failed_on_failed_process

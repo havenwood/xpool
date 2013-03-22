@@ -9,14 +9,13 @@ class IOWriter
   def run
     File.open @path, 'w' do |f|
       f.write 'true'
-      sleep 0.1
     end
   end
 
-  def run?
-    return @run if defined?(@run)
-    @run = File.read(@path) == 'true'
+  def wrote_to_disk?
+    return @wrote_to_disk if defined?(@wrote_to_disk)
+    @wrote_to_disk = File.read(@path) == 'true'
     FileUtils.rm_rf @path
-    @run
+    @wrote_to_disk
   end
 end

@@ -27,9 +27,10 @@ class XPoolTest < Test::Unit::TestCase
 
   def test_queue
     @pool.resize! 1..1
-    subprocesses = Array.new(5) { @pool.schedule Sleeper.new(0.1) }.uniq!
-    assert_equal 1, subprocesses.size
-    assert_equal 5, subprocesses[0].frequency
+    writers = Array.new(5) { IOWriter.new }
+    writers.each { |writer| @pool.schedule writer }
+    @pool.shutdown
+    writers.each { |writer| assert writer.wrote_to_disk? }
   end
 
   def test_distribution_of_work
