@@ -71,9 +71,7 @@ class XPool
 
   #
   # A graceful shutdown of the pool.
-  #
-  # All busy subprocesses finish up any code they're running & exit normally
-  # afterwards.
+  # Each subprocess in the pool empties its queue and exits normally.
   #
   # @param [Fixnum] timeout
   #   An optional amount of seconds to wait before forcing a shutdown through
