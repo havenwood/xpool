@@ -62,7 +62,7 @@ class XPool::Process
 
   #
   # @return [Boolean]
-  #   Returns true when the process is executing work.
+  #   Returns true when the process is executing a unit of work.
   #
   def busy?
     synchronize!
@@ -79,8 +79,7 @@ class XPool::Process
 
   #
   # @return [Boolean]
-  #   Returns true when a subprocess has failed due to an unhandled
-  #   exception.
+  #   Returns true when the process has failed due to an unhandled exception.
   #
   def failed?
     synchronize!
@@ -89,7 +88,7 @@ class XPool::Process
 
   #
   # @return [Boolean]
-  #   Returns true when the process is alive.
+  #   Returns true when the process is still running.
   #
   def alive?
     !dead?
@@ -97,7 +96,7 @@ class XPool::Process
 
   #
   # @return [Boolean]
-  #   Returns true when the process is no longer running.
+  #   Returns true when the process has shutdown.
   #
   def dead?
     synchronize!
@@ -105,7 +104,7 @@ class XPool::Process
   end
 
   #
-  # If a process has failed (see #failed?) this method returns the backtrace of
+  # If a process has failed (see {#failed?}) this method returns the backtrace of
   # the exception that caused the process to fail.
   #
   # @return [Array<String>]

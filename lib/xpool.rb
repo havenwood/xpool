@@ -33,6 +33,7 @@ class XPool
   #
   # @param [Fixnum] size
   #   The number of subprocesses to spawn.
+  #   Defaults to the number of cores on your CPU.
   #
   # @return [XPool]
   #
@@ -54,6 +55,7 @@ class XPool
   # @example
   #   pool = XPool.new 5
   #   pool.broadcast unit
+  #   pool.shutdown
   #
   # @raise [RuntimeError]
   #   When a subprocess in the pool is dead.
@@ -76,8 +78,6 @@ class XPool
   # @param [Fixnum] timeout
   #   An optional amount of seconds to wait before forcing a shutdown through
   #   {#shutdown!}.
-  #
-  # @see XPool::Process#spawn
   #
   # @return [void]
   #
