@@ -39,8 +39,10 @@ scale up or down.
 __EXAMPLES__
 
 The examples don't demonstrate everything that xpool can do. The 
-[API docs](http://rubydoc.info/github/robgleeson/xpool) 
-cover the missing pieces.
+[API docs](http://rubydoc.info/github/robgleeson/xpool)
+and 
+[docs/](https://github.com/robgleeson/xpool/tree/master/docs)
+directory cover the missing pieces.
 
 _1._
 
