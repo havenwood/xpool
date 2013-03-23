@@ -1,4 +1,4 @@
-__EXCEPTION HANDLING__
+__UNHANDLED EXCEPTIONS__
 
 A unit of work may fail whenever an exception is raised that it does not handle.
 When this happens xpool rescues the exception, marks the process as "failed",
