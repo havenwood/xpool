@@ -104,17 +104,16 @@ class XPool
   end
 
   #
-  # Resize the pool.
-  # All subprocesses in the pool are abruptly stopped through {#shutdown!} and
-  # a new pool the size of _range_ is created.
+  # Resize the pool (with force, if neccesary).
   #
   # @example
   #   pool = XPool.new 5
   #   pool.resize! 1..3
   #   pool.shutdown
   #
-  # @param [Range] range
+  # @param [Range,#to_a] range
   #   The new size of the pool.
+  #   The new size is determined by calling `#size` on `Range#to_a`.
   #
   # @return [void]
   #
