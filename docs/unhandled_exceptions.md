@@ -1,8 +1,11 @@
-__UNHANDLED EXCEPTIONS__
+__ABSTRACT__
 
-A unit of work may fail whenever an exception is raised that it does not handle.
-When this happens xpool rescues the exception, marks the process as "failed",
-and re-raises the exception so that the failure can be seen. 
+A unit of work may fail whenever an exception is left unhandled. When this 
+happens xpool rescues the exception, marks the process as "failed", and 
+re-raises the exception so that the failure can be seen. Finally, the 
+process running the unit of work exits, and pool is down one process. A failed 
+process can be restarted and interacted with, though, so it is possible to 
+recover.
 
 __DETAILS__
 
