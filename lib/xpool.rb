@@ -108,17 +108,16 @@ class XPool
   #
   # @example
   #   pool = XPool.new 5
-  #   pool.resize! 1..3
+  #   pool.resize! 3
   #   pool.shutdown
   #
-  # @param [Range,#to_a] range
+  # @param [Fixnum] new_size
   #   The new size of the pool.
-  #   The new size is determined by calling `#size` on `Range#to_a`.
   #
   # @return [void]
   #
-  def resize!(range)
-    new_size = range.to_a.size - 1
+  def resize!(new_size)
+    new_size -= 1
     old_size = size - 1
     if new_size == old_size
       # do nothing

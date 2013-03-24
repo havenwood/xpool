@@ -26,7 +26,7 @@ class XPoolTest < Test::Unit::TestCase
   end
 
   def test_queue
-    @pool.resize! 1..1
+    @pool.resize! 1
     writers = Array.new(5) { IOWriter.new }
     writers.each { |writer| @pool.schedule writer }
     @pool.shutdown
@@ -39,7 +39,7 @@ class XPoolTest < Test::Unit::TestCase
   end
 
   def test_resize!
-    @pool.resize! 1..1
+    @pool.resize! 1
     assert_equal 1, @pool.instance_variable_get(:@pool).size
   end
 

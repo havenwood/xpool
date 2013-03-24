@@ -1,4 +1,8 @@
 == HEAD
+	- XPool#resize! now accepts a Fixnum, not a Range.
+	If you want to resize the pool to two subprocesses, the API is now:
+	pool.resize!(2)
+
 	- optimize XPool#resize! 
 	a few optimizations:
 	when new_size == current_size, there's no resize. nothing happens. it's a 
