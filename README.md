@@ -21,12 +21,11 @@ queue. This helps ensure an even distribution of work among all subprocesses in
 the pool. The message queue that each subprocess has is also what ensures 
 work can be queued when the pool becomes dry (all subprocesses are busy). 
 
-Incase a unit of work raises an exception that it does not handle xpool will
-rescue the exception and mark the process as 'failed'. A failed process can be
-restarted, and it is also possible to access the backtrace of a failed process 
-through `XPool` and `XPool::Process` objects. The exception is also re-raised 
-so that you can see a process has failed from the output ruby prints when an 
-exception is left unhandled.
+A unit of work may fail whenever an exception is left unhandled. When this 
+happens xpool rescues the exception, marks the process as "failed", and 
+re-raises the exception so that the failure can be seen. Finally, the process 
+running the unit of work exits, and pool is down one process. A failed process 
+can be restarted and interacted with, though, so it is possible to recover.
 
 __POOL SIZE__
 
