@@ -130,7 +130,7 @@ private
     Process.wait @id
   rescue Errno::ECHILD, Errno::ESRCH
   ensure
-    @states = {dead: true}
+    @states = {dead: true} unless failed?
     @shutdown = true
     @channel.close
     @s_channel.close

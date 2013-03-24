@@ -56,4 +56,17 @@ class XPoolTest < Test::Unit::TestCase
     assert_equal 1, @pool.failed_processes.size
     assert_equal 4, @pool.size
   end
+
+  def test_failed_processes_after_shutdown
+    @pool.schedule Raiser.new
+    @pool.shutdown
+    refute @pool.failed_processes.empty?
+  end
+
+  def test_failed_process_to_repopulate_pool
+    @pool.schedule Raiser.new
+    @pool.shutdown
+    @pool.failed_processes.each(&:restart)
+    assert_equal 1, @pool.size
+  end
 end

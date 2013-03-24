@@ -1,6 +1,13 @@
+== HEAD
+	- XPool#failed_processes persists after a shutdown
+	If a process in the pool has failed and the pool is subsequently shutdown the
+	failed process will remain in XPool#failed_processes. When a failed process
+	is restarted the pool is repopulated with an active subprocess and can be 
+	used to schedule work again.
+
 == v0.9.0.1,v0.9.0.2
 	- doc improvements
-	revised & improved the README & API documentation.
+	Revised & improved the README & API documentation.
 
 == v0.9.0
 	- upgrade to ichannel v5.1.1
