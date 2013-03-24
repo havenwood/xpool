@@ -117,6 +117,11 @@ class XPool
   # @return [void]
   #
   def resize!(new_size)
+    if Range === new_size
+      warn "[DEPRECATED] XPool#resize! no longer accepts a Range." \
+           "Please use a Fixnum instead."
+      new_size = range.to_a.size
+    end
     new_size -= 1
     old_size = size - 1
     if new_size == old_size
