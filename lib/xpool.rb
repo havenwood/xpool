@@ -119,8 +119,16 @@ class XPool
   # @return [void]
   #
   def resize!(range)
-    shutdown!
-    @pool = range.to_a.map { Process.new }
+    new_size = range.to_a.size - 1
+    old_size = size - 1
+    if new_size == old_size
+      # do nothing
+    elsif new_size < old_size
+      @pool[new_size+1..old_size].each(&:shutdown!)
+      @pool = @pool[0..new_size]
+    else
+      @pool += Array.new(new_size - old_size) { Process.new }
+    end
   end
 
   #

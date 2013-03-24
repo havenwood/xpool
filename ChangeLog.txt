@@ -1,5 +1,20 @@
 == HEAD
-	- XPool#failed_processes persists after a shutdown
+	- optimize XPool#resize! 
+	a few optimizations:
+	when new_size == current_size, there's no resize. nothing happens. it's a 
+	no-op. 
+
+	when new_size > current_size, X subprocesses are spawned, where X is
+	difference between current_size and new_size(new_size - current_size).
+
+	when new_size < current_size, all subprocesses indexed after new_size are
+	shutdown and removed from the pool. no new subprocesses are spawned.
+
+	This new behavior re-uses processes that are already active in the pool when
+	it can, where as before we always spawned new subprocesses, no matter what the
+	case.
+
+- XPool#failed_processes persists after a shutdown
 	If a process in the pool has failed and the pool is subsequently shutdown the
 	failed process will remain in XPool#failed_processes. When a failed process
 	is restarted the pool is repopulated with an active subprocess and can be 
