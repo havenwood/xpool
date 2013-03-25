@@ -2,7 +2,13 @@
 	- XPool#resize! now accepts a Fixnum, not a Range.
 	If you want to resize the pool to two subprocesses, the API is now:
 	pool.resize!(2)
-
+	
+	- XPool#failed_processes persists after a shutdown
+	If a process in the pool has failed and the pool is subsequently shutdown the
+	failed process will remain in XPool#failed_processes. When a failed process
+	is restarted the pool is repopulated with an active subprocess and can be 
+	used to schedule work again.
+	
 	- optimize XPool#resize! 
 	A few optimizations:
 	
@@ -18,12 +24,6 @@
 	This new behavior reuses subprocesses that are already active in the pool when
 	it can, where as before we always spawned new subprocesses, no matter what the
 	case.
-
-	- XPool#failed_processes persists after a shutdown
-	If a process in the pool has failed and the pool is subsequently shutdown the
-	failed process will remain in XPool#failed_processes. When a failed process
-	is restarted the pool is repopulated with an active subprocess and can be 
-	used to schedule work again.
 
 == v0.9.0.1,v0.9.0.2
 	- doc improvements
