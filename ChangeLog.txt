@@ -8,8 +8,8 @@
 	when new_size == current_size, there's no resize. nothing happens. it's a 
 	no-op. 
 
-	when new_size > current_size, only X subprocesses are spawned, where X is the 
-	difference between "new_size - current_size". 
+	when new_size > current_size, only X new subprocesses are spawned, where X is 
+	the difference between "new_size - current_size". 
 
 	when new_size < current_size, all subprocesses indexed after new_size are
 	shutdown and removed from the pool. no new subprocesses are spawned.
