@@ -1,7 +1,8 @@
 require_relative 'setup'
 class XPoolTest < Test::Unit::TestCase
+  POOL_SIZE = 2
   def setup
-    @pool = XPool.new 5
+    @pool = XPool.new POOL_SIZE
   end
 
   def teardown
@@ -14,27 +15,27 @@ class XPoolTest < Test::Unit::TestCase
   end
 
   def test_size_with_graceful_shutdown
-    assert_equal 5, @pool.size
+    assert_equal POOL_SIZE, @pool.size
     @pool.shutdown
     assert_equal 0, @pool.size
   end
 
   def test_size_with_forceful_shutdown
-    assert_equal 5, @pool.size
+    assert_equal POOL_SIZE, @pool.size
     @pool.shutdown!
     assert_equal 0, @pool.size
   end
 
   def test_queue
     @pool.resize! 1
-    writers = Array.new(5) { IOWriter.new }
+    writers = Array.new(POOL_SIZE) { IOWriter.new }
     writers.each { |writer| @pool.schedule writer }
     @pool.shutdown
     writers.each { |writer| assert writer.wrote_to_disk? }
   end
 
   def test_distribution_of_work
-    subprocesses = (0..4).map { @pool.schedule Sleeper.new(0.1) }
+    subprocesses = Array.new(POOL_SIZE) { @pool.schedule Sleeper.new(0.1) }
     subprocesses.each { |subprocess| assert_equal 1, subprocess.frequency }
   end
 
@@ -45,7 +46,7 @@ class XPoolTest < Test::Unit::TestCase
 
   def test_dry?
     refute @pool.dry?
-    5.times { @pool.schedule Sleeper.new(0.5) }
+    POOL_SIZE.times { @pool.schedule Sleeper.new(0.5) }
     sleep 0.1
     assert @pool.dry?
   end
@@ -54,7 +55,7 @@ class XPoolTest < Test::Unit::TestCase
     @pool.schedule Raiser.new
     sleep 0.1
     assert_equal 1, @pool.failed_processes.size
-    assert_equal 4, @pool.size
+    assert_equal POOL_SIZE - 1, @pool.size
   end
 
   def test_failed_processes_after_shutdown
@@ -72,12 +73,12 @@ class XPoolTest < Test::Unit::TestCase
 
   def test_expand!
     @pool.expand! 1
-    assert_equal 6, @pool.size
+    assert_equal POOL_SIZE + 1, @pool.size
   end
 
   def test_shrink!
     @pool.shrink! 1
-    assert_equal 4, @pool.size
+    assert_equal POOL_SIZE - 1, @pool.size
   end
 
   def test_shrink_with_excess_number
