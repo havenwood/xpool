@@ -191,9 +191,7 @@ class XPool
   #   Returns the number of alive subprocesses in the pool.
   #
   def size
-    @pool.count do |process|
-      process.alive?
-    end
+    @pool.count(&:alive?)
   end
 
   #
