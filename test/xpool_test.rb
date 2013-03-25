@@ -69,4 +69,21 @@ class XPoolTest < Test::Unit::TestCase
     @pool.failed_processes.each(&:restart)
     assert_equal 1, @pool.size
   end
+
+  def test_expand!
+    @pool.expand! 1
+    assert_equal 6, @pool.size
+  end
+
+  def test_shrink!
+    @pool.shrink! 1
+    assert_equal 4, @pool.size
+  end
+
+  def test_shrink_with_excess_number
+    assert_raises ArgumentError do
+      @pool.shrink! 10
+    end
+  end
+
 end

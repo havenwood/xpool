@@ -42,6 +42,37 @@ class XPool
   end
 
   #
+  # @param [Fixnum] number
+  #   The number of subprocesses to add to the pool.
+  #
+  # @return
+  #   (see XPool#resize!)
+  #
+  def expand!(number)
+    resize! size + number
+  end
+
+  #
+  # @param [Fixnum] number
+  #   The number of subprocesses to remove from the pool.
+  #   A forceful shutdown is performed.
+  #
+  # @raise [ArgumentError]
+  #   When _number_ is greater than {#size}.
+  #
+  # @return
+  #   (see XPool#resize!)
+  #
+  def shrink!(number)
+    old_size = size
+    if number > old_size
+      raise ArgumentError,
+        "cannot shrink pool by #{number}. pool is only #{old_size} in size."
+    end
+    resize! old_size - number
+  end
+
+  #
   # @return [Array<XPool::Process>]
   #   Returns an Array of failed processes.
   #

@@ -1,4 +1,10 @@
 == HEAD
+	- add XPool#expand!
+	Expand the pool with X subprocesses, where X is the argument to expand!(…).
+
+	- add XPool#shrink!
+	Shrink the pool by X subprocesses, where X is the argument to shrink!(…)
+
 	- XPool#resize! now accepts a Fixnum, not a Range.
 	If you want to resize the pool to two subprocesses, the API is now:
 	pool.resize!(2)
