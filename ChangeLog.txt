@@ -6,14 +6,14 @@
 	- optimize XPool#resize! 
 	A few optimizations:
 	
-	* when new_size == current_size, there's no resize. nothing happens. it's a 
-		no-op. 
+	* when new_size == current_size, there's no resize. nothing happens. it's 
+	a no-op. 
 
 	* when new_size > current_size, only X new subprocesses are spawned, where X is 
-		the difference between "new_size - current_size". 
+	the difference between "new_size - current_size". 
 
 	* when new_size < current_size, all subprocesses indexed after new_size are
-		shutdown and removed from the pool. no new subprocesses are spawned.
+	shutdown and removed from the pool. no new subprocesses are spawned.
 
 	This new behavior reuses subprocesses that are already active in the pool when
 	it can, where as before we always spawned new subprocesses, no matter what the
