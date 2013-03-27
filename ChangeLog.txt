@@ -1,3 +1,8 @@
+== HEAD
+	- resize & resize! no longer accepts a Range.
+	deprecated in the last release, support for a Range to either resize or
+	resize! is completely removed in this release. Please use a Fixnum instead.
+
 == v0.10.0
 	- default to two subprocesses if CPU core count cannot be guessed.
 	Which is change from the old default of five.
