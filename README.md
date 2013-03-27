@@ -17,7 +17,9 @@ is defined as any object that implements the `run` method.
 In order to send a 'unit of work' between processes each subprocess has its own
 'message queue' that the pool writes to when it has been asked to schedule a 
 unit of work. A unit of work is serialized(on write to queue), and 
-deserialized(on read from queue).
+deserialized(on read from queue). The serializer used under the hood is called 
+[Marshal](http://rubydoc.info/stdlib/core/Marshal) and might be familiar to 
+you already.
 
 The logic for scheduling a unit of work is straightforward. A pool asks each 
 and every subprocess under its control how frequently its message queue has 
@@ -33,17 +35,17 @@ assigned subprocess is no longer busy. It is also possible to query the pool
 and ask if it is dry, but you can also ask an individual subprocess if it is
 busy.
 
-A unit of work may fail whenever an exception is left unhandled. When this 
-happens xpool rescues the exception, marks the process as "failed", and 
-re-raises the exception so that the failure can be seen. Finally, the process 
-running the unit of work exits, and pool is down one process. A failed process 
-can be restarted and interacted with, though, so it is possible to recover.
-
 By default xpool will create a pool with X subprocesses, where X is the number 
 of cores on your CPU. This seems like a reasonable default, but if you should 
 decide to choose otherwise you can set the size of the pool when it is 
 initialized. The pool can also be resized at runtime if you decide you need 
 to scale up or down.
+
+A unit of work may fail whenever an exception is left unhandled. When this 
+happens xpool rescues the exception, marks the process as "failed", and 
+re-raises the exception so that the failure can be seen. Finally, the process 
+running the unit of work exits, and pool is down one process. A failed process 
+can be restarted and interacted with, though, so it is possible to recover.
 
 __EXAMPLES__
 
