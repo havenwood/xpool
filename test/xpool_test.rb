@@ -77,19 +77,21 @@ class XPoolTest < Test::Unit::TestCase
   end
 
   def test_shrink
+    XPool::Process.any_instance.expects(:shutdown)
     @pool.shrink 1
     assert_equal POOL_SIZE - 1, @pool.size
   end
 
   def test_shrink!
+    XPool::Process.any_instance.expects(:shutdown!)
     @pool.shrink! 1
     assert_equal POOL_SIZE - 1, @pool.size
+    mocha_teardown
   end
 
   def test_shrink_with_excess_number
     assert_raises ArgumentError do
-      @pool.shrink! 10
+      @pool.shrink! POOL_SIZE + 1
     end
   end
-
 end
