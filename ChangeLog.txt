@@ -1,9 +1,19 @@
 == HEAD
-	- add XPool#expand!
-	Expand the pool with X subprocesses, where X is the argument to expand!(…).
+	- add XPool#resize
+	Resize the pool at runtime.
+	If subprocesses are removed from the pool a graceful shutdown is performed on 
+	each subprocess that is removed (unlike resize!, which forces a shutdown).
+
+	- add XPool#expand
+	Expand the pool with X subprocesses, where X is the argument to expand(…).
+
+	- add XPool#shrink
+	Shrink the pool by X subprocesses, where X is the argument to shrink(…).
+	A graceful shutdown is performed on any subprocesses removed from the pool.
 
 	- add XPool#shrink!
 	Shrink the pool by X subprocesses, where X is the argument to shrink!(…)
+	A forceful shutdown is performed on any subprocesses removed from the pool.
 
 	- XPool#resize! now accepts a Fixnum, not a Range.
 	If you want to resize the pool to two subprocesses, the API is now:

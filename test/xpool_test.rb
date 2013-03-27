@@ -71,9 +71,14 @@ class XPoolTest < Test::Unit::TestCase
     assert_equal 1, @pool.size
   end
 
-  def test_expand!
-    @pool.expand! 1
+  def test_expand
+    @pool.expand 1
     assert_equal POOL_SIZE + 1, @pool.size
+  end
+
+  def test_shrink
+    @pool.shrink 1
+    assert_equal POOL_SIZE - 1, @pool.size
   end
 
   def test_shrink!

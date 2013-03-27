@@ -48,8 +48,27 @@ class XPool
   # @return
   #   (see XPool#resize!)
   #
-  def expand!(number)
+  def expand(number)
     resize! size + number
+  end
+
+  #
+  # @param [Fixnum] number
+  #   The number of subprocesses to remove from the pool.
+  #   A graceful shutdown is performed.
+  #
+  # @raise
+  #   (see XPool#shrink!)
+  #
+  # @return
+  #   (see Xpool#shrink!)
+  #
+  def shrink(number)
+    present_size = size
+    raise_if number > present_size,
+      ArgumentError,
+      "cannot shrink pool by #{number}. pool is only #{present_size} in size."
+    resize present_size - number
   end
 
   #
@@ -64,12 +83,11 @@ class XPool
   #   (see XPool#resize!)
   #
   def shrink!(number)
-    old_size = size
-    if number > old_size
-      raise ArgumentError,
-        "cannot shrink pool by #{number}. pool is only #{old_size} in size."
-    end
-    resize! old_size - number
+    present_size = size
+    raise_if number > present_size,
+      ArgumentError,
+      "cannot shrink pool by #{number}. pool is only #{present_size} in size."
+    resize! present_size - number
   end
 
   #
@@ -135,6 +153,18 @@ class XPool
   end
 
   #
+  # Resize the pool (gracefully, if neccesary)
+  #
+  # @param
+  #   (see XPool#resize!)
+  #
+  # @return [void]
+  #
+  def resize(new_size)
+    _resize new_size, false
+  end
+
+  #
   # Resize the pool (with force, if neccesary).
   #
   # @example
@@ -148,21 +178,7 @@ class XPool
   # @return [void]
   #
   def resize!(new_size)
-    if Range === new_size
-      warn "[DEPRECATED] XPool#resize! no longer accepts a Range." \
-           "Please use a Fixnum instead."
-      new_size = range.to_a.size
-    end
-    new_size -= 1
-    old_size = size - 1
-    if new_size == old_size
-      # do nothing
-    elsif new_size < old_size
-      @pool[new_size+1..old_size].each(&:shutdown!)
-      @pool = @pool[0..new_size]
-    else
-      @pool += Array.new(new_size - old_size) { Process.new }
-    end
+    _resize new_size, true
   end
 
   #
@@ -202,9 +218,13 @@ class XPool
     @pool.all?(&:busy?)
   end
 
-  #
-  # Count the number of CPU cores available.
-  #
+private
+  def raise_if(predicate, e, m)
+    if predicate
+      raise e, m
+    end
+  end
+
   def number_of_cpu_cores
     case RbConfig::CONFIG['host_os']
     when /linux/
@@ -215,6 +235,25 @@ class XPool
       Integer(`kstat -m cpu_info | grep -w core_id | uniq | wc -l`)
     else
       5
+    end
+  end
+
+  def _resize(new_size, with_force)
+    if Range === new_size
+      warn "[DEPRECATED] XPool#resize! no longer accepts a Range." \
+           "Please use a Fixnum instead."
+      new_size = range.to_a.size
+    end
+    new_size -= 1
+    old_size = size - 1
+    if new_size == old_size
+      # do nothing
+    elsif new_size < old_size
+      meth = with_force ? :shutdown! : :shutdown
+      @pool[new_size+1..old_size].each(&meth)
+      @pool = @pool[0..new_size]
+    else
+      @pool += Array.new(new_size - old_size) { Process.new }
     end
   end
 end
