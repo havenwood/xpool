@@ -234,7 +234,7 @@ private
     when /solaris/
       Integer(`kstat -m cpu_info | grep -w core_id | uniq | wc -l`)
     else
-      5
+      2
     end
   end
 

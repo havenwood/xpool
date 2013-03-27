@@ -1,4 +1,7 @@
 == HEAD
+	- default to two subprocesses if CPU core count cannot be guessed.
+	Which is change from the old default of five.
+
 	- add XPool#resize
 	Resize the pool at runtime.
 	If subprocesses are removed from the pool a graceful shutdown is performed on 
