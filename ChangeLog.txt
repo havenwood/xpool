@@ -1,4 +1,4 @@
-== HEAD
+== v0.10.0
 	- default to two subprocesses if CPU core count cannot be guessed.
 	Which is change from the old default of five.
 
