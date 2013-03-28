@@ -29,7 +29,7 @@ pool with five subprocesses and schedule a unit of work five times, each
 subprocess in the pool would have executed the unit of work once.
 
 A pool can become "dry" whenever all its subprocesses are busy. If you schedule
-a unit of work on a dry pool the same scheduling logic apllies but instead of
+a unit of work on a dry pool the same scheduling logic applies but instead of
 the unit of work executing right away it will be executed whenever the 
 assigned subprocess is no longer busy. It is also possible to query the pool 
 and ask if it is dry, but you can also ask an individual subprocess if it is
