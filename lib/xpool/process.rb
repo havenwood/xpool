@@ -3,7 +3,8 @@ class XPool::Process
   # @return [XPool::Process]
   #   Returns an instance of XPool::Process
   #
-  def initialize
+  def initialize serializer=Marshal
+    @serializer = serializer
     @id = spawn
   end
 
@@ -145,8 +146,8 @@ private
   end
 
   def reset
-    @channel = IChannel.new Marshal
-    @s_channel = IChannel.new Marshal
+    @channel = IChannel.new @serializer
+    @s_channel = IChannel.new @serializer
     @shutdown = false
     @states = {}
     @frequency = 0
